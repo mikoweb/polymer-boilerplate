@@ -1,0 +1,8 @@
+{
+  "jquery": "jQuery",
+  "backbone": "Backbone",
+  "marionette": "Marionette",
+  "backbone.marionette": "Marionette",
+  "underscore": "_",
+  "polymer-model": "PolymerModel"
+}
