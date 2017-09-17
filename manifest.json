@@ -1,0 +1,6 @@
+{
+  "name": "polymer-boilerplate-app",
+  "short_name": "polymer-boilerplate-app",
+  "start_url": "/",
+  "display": "standalone"
+}

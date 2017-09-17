@@ -1,0 +1,16 @@
+{
+  "entrypoint": "pages/index.html",
+  "shell": "fragments/app.html",
+  "fragments": [],
+  "lint": {
+    "rules": [
+      "polymer-2"
+    ]
+  },
+  "builds": [{
+    "name": "bundled",
+    "preset": "es5-bundled",
+    "addServiceWorker": false,
+    "addPushManifest": false
+  }]
+}
