@@ -12,6 +12,7 @@ gulp.task('bundle-core', () => {
         Path.nodeModules('/underscore/underscore.js'),
         Path.nodeModules('/backbone/backbone.js'),
         Path.lib('/marionette/backbone.marionette.js'),
+        Path.bowerComponents('/wc-ready/index.js'),
         Path.bowerComponents('/polymer-backbone/src/model/polymer-model.js'),
     ], 'core.js');
 });

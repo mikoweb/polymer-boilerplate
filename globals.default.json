@@ -1,4 +1,5 @@
 {
+  "WCReady": "WCReady",
   "jquery": "jQuery",
   "backbone": "Backbone",
   "marionette": "Marionette",

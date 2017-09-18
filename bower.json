@@ -3,7 +3,8 @@
   "main": "pages/index.html",
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.0",
-    "polymer-backbone": "^1.0.7"
+    "polymer-backbone": "^1.0.7",
+    "wc-ready": "~0.1.0"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0",
