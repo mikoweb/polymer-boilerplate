@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Test Webcomponents Polyfills</title>
+    <script src="../../bundle/core.js"></script>
+    <script src="../../bundle/polyfills/webcomponents-loader.js"></script>
+    <script src="../../bower_components/web-component-tester/browser.js"></script>
+    <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+</head>
+<body>
+    <script>
+        let ready = false;
+        let delayedReady = false;
+
+        WCReady(() => {
+            ready = true;
+        });
+
+        setTimeout(() => {
+            WCReady(() => {
+                delayedReady = true;
+            });
+        }, 200);
+    </script>
+    <dom-module id="test-element">
+        <template>
+            <p class="paragraph">Lorem Ipsum</p>
+        </template>
+    </dom-module>
+    <test-fixture id="Fixture">
+        <template>
+            <test-element></test-element>
+        </template>
+    </test-fixture>
+    <script>
+        suite('polymer', () => {
+            test('WebComponentsReady', (done) => {
+                const interval = setInterval(() => {
+                    if (ready && delayedReady) {
+                        clearInterval(interval);
+                        assert.isOk(true);
+                        done();
+                    }
+                }, 50);
+            });
+
+            test('Test dom-bind element', () => {
+                class TestElement extends Polymer.Element {
+                    static get is() {
+                        return 'test-element';
+                    }
+                }
+
+                window.customElements.define(TestElement.is, TestElement);
+
+                const element = fixture('Fixture');
+                assert.equal('Lorem Ipsum', element.shadowRoot.querySelector('.paragraph').textContent);
+            });
+        });
+    </script>
+</body>
+</html>

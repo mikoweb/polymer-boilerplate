@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Test Backbone Library</title>
+    <script src="../../bundle/core.js"></script>
+    <script src="../../bundle/polyfills/webcomponents-loader.js"></script>
+    <script src="../../bower_components/web-component-tester/browser.js"></script>
+</head>
+<body>
+    <script>
+        suite('core-backbone', () => {
+            test('Library exists', () => {
+                assert.isDefined(Backbone, 'Backbone has been defined');
+                assert.isObject(Backbone);
+                assert.isDefined(Backbone.Events, 'Backbone.Events has been defined');
+                assert.isDefined(Backbone.Model, 'Backbone.Model has been defined');
+                assert.isDefined(Backbone.Collection, 'Backbone.Collection has been defined');
+                assert.isDefined(Backbone.Router, 'Backbone.Router has been defined');
+                assert.isDefined(Backbone.history, 'Backbone.history has been defined');
+                assert.isDefined(Backbone.sync, 'Backbone.sync has been defined');
+                assert.isDefined(Backbone.View, 'Backbone.View has been defined');
+            });
+        });
+    </script>
+</body>
+</html>
