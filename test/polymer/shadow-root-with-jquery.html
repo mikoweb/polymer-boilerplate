@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Shadow Root with jQuery</title>
+    <script src="../../bundle/core.js"></script>
+    <script src="../../bundle/polyfills/webcomponents-loader.js"></script>
+    <script src="../../bower_components/web-component-tester/browser.js"></script>
+    <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+</head>
+<body>
+    <dom-module id="test-element">
+        <template>
+            <div class="my-block">
+                <p class="paragraph">Lorem Ipsum</p>
+            </div>
+        </template>
+    </dom-module>
+    <test-fixture id="Fixture">
+        <template>
+            <test-element></test-element>
+        </template>
+    </test-fixture>
+    <script>
+        suite('shadow-root-with-jquery', () => {
+            const createElement = () => {
+                const name = 'test-element';
+                if (!window.customElements.get(name)) {
+                    window.customElements.define(name, class TestElement extends Polymer.Element {
+                        static get is() {
+                            return name;
+                        }
+                        ready() {
+                            super.ready();
+                            this.$el = $(this.shadowRoot.firstElementChild);
+                        }
+                        /**
+                         * @return {jQuery}
+                         */
+                        getParagraph() {
+                            return this.$el.find('.paragraph');
+                        }
+                    });
+                }
+            };
+
+            test('jQuery selectors', () => {
+                createElement();
+                const element = fixture('Fixture');
+                assert.equal('Lorem Ipsum', element.getParagraph().text());
+                assert.equal('Lorem Ipsum', element.$el.find('.paragraph').text());
+                assert.equal('Lorem Ipsum', element.$el.children().filter('.paragraph').text());
+            });
+
+            test('jQuery events', (done) => {
+                createElement();
+                const element = fixture('Fixture');
+
+                element.getParagraph().on('click', (e) => {
+                    assert.isObject(e);
+                    done();
+                });
+
+                element.getParagraph().trigger('click');
+            });
+        });
+    </script>
+</body>
+</html>
