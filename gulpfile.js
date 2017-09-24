@@ -7,6 +7,7 @@ const bundleUglify = require('./gulp/gulp-uglify');
 const bundleSass = require('./gulp/gulp-sass');
 const stylemod = require('gulp-style-modules');
 const sass = require('gulp-sass');
+const run = require('gulp-run');
 
 gulp.task('bundle-core', () => {
     return bundle([
@@ -40,7 +41,7 @@ gulp.task('sass', () => {
 });
 
 gulp.task('modularize-styles', () => {
-    gulp.src('./src/**/*.scss')
+    return gulp.src('./src/**/*.scss')
         .pipe(sass({
             outputStyle: 'compressed',
         }).on('error', sass.logError))
@@ -48,4 +49,18 @@ gulp.task('modularize-styles', () => {
         .pipe(gulp.dest("./src"));
 });
 
-gulp.task('dist', ['bundle-core', 'bundle-webcomponentsjs', 'dist-app', 'sass', 'modularize-styles']);
+gulp.task('polymer-build', ['modularize-styles'], () => {
+    return run('npm run polymer-build').exec();
+});
+
+gulp.task('dist', ['bundle-core', 'bundle-webcomponentsjs', 'dist-app', 'sass', 'modularize-styles', 'polymer-build']);
+
+// Watchers
+
+gulp.task('watch', () => {
+    gulp.watch(Path.lib('/**/*.js'), ['bundle-core']);
+    gulp.watch('./src/app/**/*.js', ['dist-app']);
+    gulp.watch(Path.style('/**/*.scss'), ['sass']);
+    gulp.watch('./src/**/*.scss', ['modularize-styles']);
+    gulp.watch('./src/**/*.html', ['polymer-build']);
+});
