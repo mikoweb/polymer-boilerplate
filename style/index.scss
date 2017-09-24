@@ -1,2 +1,9 @@
+// Libraries
 @import "../node_modules/normalize.css/normalize";
 
+// Web Components
+@import "wc";
+@import "custom-elements/paper-icon-button";
+
+// Layout
+@import "header";

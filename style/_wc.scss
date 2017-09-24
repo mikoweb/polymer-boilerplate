@@ -1,0 +1,23 @@
+html:not(.no-js) {
+  *[wc-lazy] {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 1s, height 1s, width 1s;
+
+    &.ready {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+  }
+
+  *[wc-hidden] {
+    display: none;
+    pointer-events: none;
+    &.ready {
+      display: block;
+      pointer-events: auto;
+    }
+  }
+}
