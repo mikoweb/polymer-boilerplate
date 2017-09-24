@@ -14,6 +14,9 @@ class Path {
     static bowerComponents(path = '') {
         return './bower_components'.concat(path);
     }
+    static style(path = '') {
+        return './style'.concat(path);
+    }
 }
 
 module.exports = Path;
