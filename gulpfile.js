@@ -4,6 +4,7 @@ const webcomponents = require('./gulp/gulp-webcomponents');
 const rollupBundle = require('./gulp/rollup-bundle');
 const gulp = require('gulp');
 const bundleUglify = require('./gulp/gulp-uglify');
+const bundleSass = require('./gulp/gulp-sass');
 
 gulp.task('bundle-core', () => {
     return bundle([
@@ -32,4 +33,8 @@ gulp.task('dist-app', ['build-app'], () => {
     return bundleUglify(Path.bundle('/app.js'), Path.bundle());
 });
 
-gulp.task('dist', ['bundle-core', 'bundle-webcomponentsjs', 'dist-app']);
+gulp.task('sass', function () {
+    return bundleSass(Path.style('/index.scss'), Path.bundle());
+});
+
+gulp.task('dist', ['bundle-core', 'bundle-webcomponentsjs', 'dist-app', 'sass']);
