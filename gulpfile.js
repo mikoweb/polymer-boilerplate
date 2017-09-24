@@ -34,7 +34,7 @@ gulp.task('dist-app', ['build-app'], () => {
 });
 
 gulp.task('sass', function () {
-    return bundleSass(Path.style('/index.scss'), Path.bundle());
+    return bundleSass(Path.style('/index.scss'), 'style.css');
 });
 
 gulp.task('dist', ['bundle-core', 'bundle-webcomponentsjs', 'dist-app', 'sass']);
