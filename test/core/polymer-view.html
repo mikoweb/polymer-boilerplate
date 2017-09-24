@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Test Backbone.View and Mn.View with Polymer Element</title>
+    <script src="../../bundle/core.js"></script>
+    <script src="../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../bower_components/web-component-tester/browser.js"></script>
+    <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+    <link rel="import" href="../../bower_components/polymer-backbone/src/view-mixin.html">
+    <link rel="import" href="../../bower_components/polymer-backbone/src/test/x-modal/x-modal.html">
+    <link rel="import" href="../../bower_components/polymer-backbone/src/test/x-button-counter/x-button-counter.html">
+</head>
+<body>
+    <!-- This test has been copied from ../../bower_components/polymer-backbone/test/view-mixin.html -->
+
+    <test-fixture id="XModal">
+        <template>
+            <x-modal></x-modal>
+        </template>
+    </test-fixture>
+
+    <test-fixture id="XButtonCounter">
+        <template>
+            <x-button-counter></x-button-counter>
+        </template>
+    </test-fixture>
+
+    <script>
+        suite('view-mixin', () => {
+            test('Check class type', () => {
+                let type = PolymerViewMixin(Polymer.Element, Backbone.View);
+                expect(Backbone.View).to.equal(type.viewClass);
+
+                class TestView extends Backbone.View {}
+                type = PolymerViewMixin(Polymer.Element, TestView);
+                expect(TestView).to.equal(type.viewClass);
+
+                type = PolymerViewMixin(Polymer.Element, Backbone.View);
+                expect(Backbone.View).to.equal(type.viewClass);
+
+                type = PolymerViewMixin(Polymer.Element, Mn.View);
+                expect(Mn.View).to.equal(type.viewClass);
+
+                expect(PolymerViewMixin(Polymer.Element, Backbone.View))
+                    .to.equal(PolymerViewMixin(Polymer.Element, Backbone.View));
+
+                expect(PolymerViewMixin(Polymer.Element, Backbone.View))
+                    .to.not.equal(PolymerViewMixin(Polymer.Element, TestView));
+
+                expect(PolymerViewMixin(Polymer.Element, Mn.View))
+                    .to.equal(PolymerViewMixin(Polymer.Element, Mn.View));
+
+                expect(PolymerViewMixin(Polymer.Element, Backbone.View))
+                    .to.not.equal(PolymerViewMixin(Polymer.Element, Mn.View));
+            });
+
+            test('XModal as Mn.View sample', () => {
+                const element = fixture('XModal');
+
+                assert.lengthOf(element.view.$el, 1);
+                assert.lengthOf(element.view.getUI('close'), 1);
+                assert.lengthOf(element.view.getUI('title'), 1);
+                assert.lengthOf(element.view.getUI('header'), 1);
+                assert.lengthOf(element.view.getUI('content'), 1);
+
+                expect(false).to.equal(element.opened);
+                element.open();
+                expect('opened').to.equal(element.getAttribute('opened'));
+                expect(true).to.equal(element.opened);
+                element.view.getUI('close').trigger('click');
+                expect(false).to.equal(element.opened);
+                element.open();
+                expect(true).to.equal(element.opened);
+                element.view.$el.get(0).dispatchEvent(new Event('click'));
+                expect(true).to.equal(element.opened);
+                element.dispatchEvent(new Event('click'));
+                expect(false).to.equal(element.opened);
+
+                expect(false).to.equal(element.view.getUI('header').hasClass('modal__header--hidden'));
+                element.setAttribute('hide-header', 'hide-header');
+                expect(true).to.equal(element.view.getUI('header').hasClass('modal__header--hidden'));
+                element.removeAttribute('hide-header');
+            });
+
+            test('XButtonCounter as Backbone.View sample', () => {
+                const element = fixture('XButtonCounter');
+                expect(0).to.equal(element.count);
+                element.increase();
+                expect(1).to.equal(element.count);
+                element.decrease();
+                expect(0).to.equal(element.count);
+
+                assert.lengthOf(element.view.$el, 1);
+
+                element.view.$el.find('.counter__button').trigger('click');
+                expect(1).to.equal(element.count);
+                element.view.$el.find('.counter__button').trigger('click');
+                expect(2).to.equal(element.count);
+                element.decrease();
+                expect(1).to.equal(element.count);
+                element.decrease();
+                expect(0).to.equal(element.count);
+                element.decrease();
+                expect(-1).to.equal(element.count);
+                element.view.$el.find('.counter__button').trigger('click');
+                expect(0).to.equal(element.count);
+                element.view.$el.find('.counter__button').trigger('click');
+                expect(1).to.equal(element.count);
+                expect(1).to.equal(parseInt(element.view.$el.find('.counter__count').text(), 10));
+            });
+        });
+    </script>
+</body>
+</html>
