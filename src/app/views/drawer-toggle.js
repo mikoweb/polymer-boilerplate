@@ -18,7 +18,7 @@ export default class DrawerToggle extends Mn.View {
      * @private
      */
     _onClick(e) {
-        const id = this.$el.attr('data-drawer-id');
+        const id = e.target.getAttribute('data-drawer-id');
 
         if (_.isString(id) && id.length > 0) {
             const drawer = document.getElementById(id);
