@@ -1,0 +1,15 @@
+.page-progress {
+  --paper-progress-transition-duration: .5s;
+  --paper-progress-transition-timing-function: ease;
+  --paper-progress-transition-transition-delay: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  width: 100vw;
+  z-index: 1000;
+
+  &.active {
+    display: block;
+  }
+}
