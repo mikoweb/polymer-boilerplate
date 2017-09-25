@@ -1,0 +1,23 @@
+.drawer-menu {
+  padding: 0;
+  margin: .5em 0;
+  list-style: none;
+  font-size: 1.1em;
+  color: $body-color;
+
+  &__item {
+    display: block;
+  }
+
+  &__link {
+    display: block;
+    color: inherit;
+    padding: .25em 1em;
+
+    &:hover, &:focus {
+      text-decoration: none;
+      color: inherit;
+      background: $clr-grey-200;
+    }
+  }
+}

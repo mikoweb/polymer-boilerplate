@@ -1,2 +1,12 @@
 // Put variables to override
 
+$theme-colors: (
+  primary: $clr-red-a700,
+  secondary: $clr-grey-400,
+  success: $clr-green-500,
+  info: $clr-blue-400,
+  warning: $clr-yellow-300,
+  danger: $clr-red-800,
+  light: $clr-grey-200,
+  dark: $clr-grey-900
+) !default;
