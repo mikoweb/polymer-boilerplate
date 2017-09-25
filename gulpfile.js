@@ -57,10 +57,24 @@ gulp.task('dist', ['bundle-core', 'bundle-webcomponentsjs', 'dist-app', 'sass', 
 
 // Watchers
 
-gulp.task('watch', () => {
-    gulp.watch(Path.lib('/**/*.js'), ['bundle-core']);
-    gulp.watch('./src/app/**/*.js', ['dist-app']);
-    gulp.watch(Path.style('/**/*.scss'), ['sass']);
-    gulp.watch('./src/**/*.scss', ['modularize-styles']);
-    gulp.watch('./src/**/*.html', ['polymer-build']);
+gulp.task('watch:core', () => {
+    return gulp.watch(Path.lib('/**/*.js'), ['bundle-core']);
 });
+
+gulp.task('watch:app', () => {
+    return gulp.watch('./src/app/**/*.js', ['dist-app']);
+});
+
+gulp.task('watch:sass', () => {
+    return gulp.watch(Path.style('/**/*.scss'), ['sass']);
+});
+
+gulp.task('watch:modularize-styles', () => {
+    return gulp.watch('./src/**/*.scss', ['modularize-styles']);
+});
+
+gulp.task('watch:polymer-build', () => {
+    return gulp.watch('./src/**/*.html', ['polymer-build']);
+});
+
+gulp.task('watch', ['watch:core', 'watch:app', 'watch:sass', 'watch:modularize-styles']);
