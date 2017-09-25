@@ -2381,6 +2381,10 @@ map-obj@^1.0.0, map-obj@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/map-obj/-/map-obj-1.0.1.tgz#d933ceb9205d82bdcf4886f6742bdc2b4dea146d"
 
+material-design-color@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/material-design-color/-/material-design-color-2.3.2.tgz#e8af958d852a8747bfb211e48ce1282bda918815"
+
 memoizee@^0.4.5:
   version "0.4.11"
   resolved "https://registry.yarnpkg.com/memoizee/-/memoizee-0.4.11.tgz#bde9817663c9e40fdb2a4ea1c367296087ae8c8f"
