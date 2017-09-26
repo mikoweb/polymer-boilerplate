@@ -8,6 +8,7 @@ const bundleSass = require('./gulp/gulp-sass');
 const stylemod = require('gulp-style-modules');
 const sass = require('gulp-sass');
 const run = require('gulp-run');
+const concat = require('gulp-concat');
 
 gulp.task('bundle-core', () => {
     return bundle([
@@ -19,6 +20,13 @@ gulp.task('bundle-core', () => {
         Path.bowerComponents('/wc-ready/index.js'),
         Path.bowerComponents('/polymer-backbone/src/model/polymer-model.js'),
     ], 'core.js');
+});
+
+gulp.task('bundle-core-with-es5-adapter', ['bundle-core'], () => {
+    return gulp.src([
+        Path.bowerComponents('/webcomponentsjs/custom-elements-es5-adapter.js'),
+        Path.bundle('/core.min.js'),
+    ]).pipe(concat('core.min.js')).pipe(gulp.dest(Path.bundle()));
 });
 
 gulp.task('bundle-webcomponentsjs', () => {
@@ -53,12 +61,13 @@ gulp.task('polymer-build', ['modularize-styles'], () => {
     return run('npm run polymer-build').exec();
 });
 
-gulp.task('dist', ['bundle-core', 'bundle-webcomponentsjs', 'dist-app', 'sass', 'modularize-styles', 'polymer-build']);
+gulp.task('dist', ['bundle-core-with-es5-adapter', 'bundle-webcomponentsjs', 'dist-app', 'sass',
+    'modularize-styles', 'polymer-build']);
 
 // Watchers
 
 gulp.task('watch:core', () => {
-    return gulp.watch(Path.lib('/**/*.js'), ['bundle-core']);
+    return gulp.watch(Path.lib('/**/*.js'), ['bundle-core-with-es5-adapter']);
 });
 
 gulp.task('watch:app', () => {
