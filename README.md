@@ -1,17 +1,20 @@
-# TODO
+# Polymer Boilerplate
 
-readme under construction
+Polymer Boilerplate provides everything, you need, to start a new website project in a minute.
 
 ## Features
 
 * Web Components ready. You can create custom reusable HTML elements with 
 [Polymer Library](https://www.polymer-project.org/2.0/docs/devguide/feature-overview).
 * Ready for writing code in ES6+ and ECMAScript modules.
+* Provides tools to build scripts, styles, custom jQuery and others libraries.
+* [Tools to tests](https://www.polymer-project.org/2.0/docs/tools/tests) provided by Polymer.
+* You can [runs a local web server](https://www.polymer-project.org/2.0/docs/tools/polymer-cli-commands#serve).
 * Contains some Marionette.js features such as [Marionette.View](https://marionettejs.com/docs/master/marionette.view.html).
     It's reduced size library version.
 * Contains [Backbone](http://backbonejs.org) library. It's small library that provides [Model](http://backbonejs.org/#Model) 
-    and a few others features for your application. 
-* TODO (directory structure, tools, custom jquery, underscore)
+    and a few others features for your application.
+* Contains custom smaller jQuery library.
 
 ## What's included by default
 
