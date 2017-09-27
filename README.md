@@ -48,6 +48,74 @@ Feature | Description
  Normalize and reset styles | Normalized stylesheets, which you can adjust with Sass variables and mixins.
  [Bootstrap 4 Grid](https://getbootstrap.com/docs/4.0/layout/grid/) | Use our powerful mobile-first flexbox grid to build layouts of all shapes and sizes thanks to a twelve column system, five default responsive tiers, Sass variables and mixins, and dozens of predefined classes. 
 
+## How to create a new project
+
+Install Polymer CLI.
+
+    npm install -g bower
+    npm install -g polymer-cli
+    
+Install gulp.
+
+    npm install -g gulp-cli
+
+Clone this repository.
+
+    git clone https://github.com/mikoweb/polymer-boilerplate.git /path/to/your/project
+    git remote remove origin
+
+Install dependencies.
+
+    npm install
+    bower install
+
+## How to build my project
+
+Inside `gulpfile.js` placed all necessary tasks. 
+
+To build full project run command:
+
+    gulp dist
+
+Below is a list with all available tasks.
+
+![gulp tasks](https://github.com/mikoweb/polymer-boilerplate/raw/master/docs/tasks.png)
+
+## Run and tests
+
+All information is available in the Polymer Docs.
+
+https://www.polymer-project.org/2.0/docs/tools/polymer-cli-commands
+https://www.polymer-project.org/2.0/docs/tools/tests
+
+Below is a three most used commands.
+
+    polymer serve
+    polymer test
+    polymer test -p
+    
+## Directory structure
+
+Path | Description
+:---: | :---:
+ bower_components | Packages used by Polymer and Web Components.
+ build | Folder used by [Polymer Builder](https://www.polymer-project.org/2.0/docs/tools/polymer-json), here you will find built file for HTML import. Always use it on production.
+ builders | Scripts to build custom libraries.
+ bundle | Bundled scripts and stylesheets.
+ fragments | Put files that will be importing by `link[rel=import]`.
+ gulp | Gulp tasks source code.
+ lib | Good place to insert external libraries.
+ node_modules | Npm or Yarn packages.
+ pages | Here put HTML files.
+ src/elements | Here put your Web Components, reserved for [Custom Elements](https://www.polymer-project.org/2.0/docs/devguide/registering-elements).
+ src/blocks | Similar to `src/elements` but it's for large/layout/nested elements like `<app-layout>`.
+ src/app/index.js | Main file of your JavaScript application.
+ src/app | Put scripts and use ECMAScript imports.
+ static | Reserved for static files like images, fonts.
+ style | Reserved for Sass/CSS source code.
+ test | Reserved for test source code.
+ globals.default.json | Contains a list of global variables included by `bundle/core.min.js`. Required by [rollup.js bundler](https://rollupjs.org/).
+
 ##  Custom libraries builders
 
 You can build custom libraries versions, building tools are located in `builders` directory. Settings may be changed 
