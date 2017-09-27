@@ -136,3 +136,12 @@ For build custom Marionette:
 ```
 npm run build-custom-marionette
 ```
+
+## License
+
+Copyright (c) 2017, Rafał Mikołajun
+All rights reserved.
+
+This project is under the BSD 3-clause license. See the complete license in the file:
+
+    LICENSE
