@@ -2,6 +2,17 @@
 
 Polymer Boilerplate provides everything, you need, to start a new website project in a minute.
 
+Table of contents:
+
+* [Features](https://github.com/mikoweb/polymer-boilerplate#features)
+* [What's included by default](https://github.com/mikoweb/polymer-boilerplate#whats-included-by-default)
+* [How to create a new project](https://github.com/mikoweb/polymer-boilerplate#how-to-create-a-new-project)
+* [How to build my project](https://github.com/mikoweb/polymer-boilerplate#how-to-build-my-project)
+* [Run and tests](https://github.com/mikoweb/polymer-boilerplate#run-and-tests)
+* [Directory structure](https://github.com/mikoweb/polymer-boilerplate#directory-structure)
+* [Custom libraries builders](https://github.com/mikoweb/polymer-boilerplate#custom-libraries-builders)
+* [License](https://github.com/mikoweb/polymer-boilerplate/blob/master/LICENSE)
+
 ## Features
 
 * Web Components ready. You can create custom reusable HTML elements with 
