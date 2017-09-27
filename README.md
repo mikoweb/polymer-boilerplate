@@ -86,6 +86,7 @@ Below is a list with all available tasks.
 All information is available in the Polymer Docs.
 
 https://www.polymer-project.org/2.0/docs/tools/polymer-cli-commands
+
 https://www.polymer-project.org/2.0/docs/tools/tests
 
 Below is a three most used commands.
