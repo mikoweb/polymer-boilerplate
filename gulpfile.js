@@ -13,6 +13,9 @@ const concat = require('gulp-concat');
 gulp.task('bundle-core', () => {
     return bundle([
         Path.lib('/babel-helpers.js'),
+        Path.nodeModules('/axios/dist/axios.js'),
+        Path.nodeModules('/objectmodel/dist/object-model.umd.js'),
+        Path.nodeModules('/model-persistence/bundle/model-persistence.js'),
         Path.bowerComponents('/wc-ready/index.js'),
     ], 'core.js');
 });

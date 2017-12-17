@@ -18,7 +18,8 @@
   },
   "dependencies": {
     "bootstrap": "4.0.0-beta.2",
-    "material-design-color": "^2.3.2"
+    "material-design-color": "^2.3.2",
+    "model-persistence": "^1.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
