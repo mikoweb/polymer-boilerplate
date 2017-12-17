@@ -2,5 +2,6 @@
   "WCReady": "WCReady",
   "axios": "axios",
   "objectmodel": "Model",
-  "model-persistence": "modelPersist"
+  "model-persistence": "modelPersist",
+  "redux": "Redux"
 }
