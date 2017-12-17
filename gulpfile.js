@@ -13,12 +13,7 @@ const concat = require('gulp-concat');
 gulp.task('bundle-core', () => {
     return bundle([
         Path.lib('/babel-helpers.js'),
-        Path.lib('/jquery/jquery.js'),
-        Path.nodeModules('/underscore/underscore.js'),
-        Path.nodeModules('/backbone/backbone.js'),
-        Path.lib('/marionette/backbone.marionette.js'),
         Path.bowerComponents('/wc-ready/index.js'),
-        Path.bowerComponents('/polymer-backbone/src/model/polymer-model.js'),
     ], 'core.js');
 });
 
