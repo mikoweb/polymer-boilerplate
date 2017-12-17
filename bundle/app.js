@@ -6,16 +6,25 @@ _ = _ && _.hasOwnProperty('default') ? _['default'] : _;
 $ = $ && $.hasOwnProperty('default') ? $['default'] : $;
 
 /**
+ * Make read-only properties.
+ *
  * @param {Object} object
- * @param {string} property
- * @param value
  */
-var name = function name(object, property, value) {
-    Object.defineProperty(object, property, {
-        enumerable: true,
-        configurable: false,
-        writable: false,
-        value: value
+var namespace = function namespace(object) {
+    Object.keys(object).forEach(function (key) {
+        var prop = object[key];
+        var descriptor = Object.getOwnPropertyDescriptor(object, key);
+
+        Object.defineProperty(object, key, {
+            enumerable: true,
+            configurable: false,
+            writable: false,
+            value: descriptor.value
+        });
+
+        if (prop !== null && (typeof prop === 'undefined' ? 'undefined' : babelHelpers.typeof(prop)) === 'object' && prop.constructor === Object) {
+            namespace(prop);
+        }
     });
 };
 
@@ -172,8 +181,9 @@ var Html = function (_Mn$View) {
     return Html;
 }(Mn.View);
 
-/** @typedef {Object} window.App */
-name(window, 'App', {});
+window.App = {};
+
+namespace(window.App);
 
 new Html().render();
 
