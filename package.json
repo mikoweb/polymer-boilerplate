@@ -4,11 +4,7 @@
   "main": "pages/index.html",
   "scripts": {
     "babel-external-helpers": "babel-external-helpers",
-    "build-custom-jquery": "node builders/jquery/build.js",
-    "build-custom-lodash": "node builders/lodash/build.js",
-    "build-custom-marionette": "node builders/marionette/build.js",
     "copy-babel-helpers": "babel-external-helpers > ./lib/babel-helpers.js",
-    "lodash": "lodash",
     "polymer-build": "polymer build",
     "serve": "polymer serve",
     "test": "polymer test"

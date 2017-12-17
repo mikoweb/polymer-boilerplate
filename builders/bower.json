@@ -1,6 +1,0 @@
-{
-  "name": "polymer-boilerplate-builders",
-  "dependencies": {
-    "jQuery": "^3.2.1"
-  }
-}
