@@ -111,7 +111,7 @@ Below is a three most used commands.
 Path | Description
 :---: | :---:
  bower_components | Packages used by Polymer and Web Components.
- build | Folder used by [Polymer Builder](https://www.polymer-project.org/2.0/docs/tools/polymer-json), here you will find built file for HTML import. Always use it on production.
+ build | Folder used by [Polymer Bundler](https://www.polymer-project.org/2.0/docs/tools/polymer-json), here you will find built file for HTML import. Always use it on production.
  builders | Scripts to build custom libraries.
  bundle | Bundled scripts and stylesheets.
  fragments | Put files that will be importing by `link[rel=import]`.
