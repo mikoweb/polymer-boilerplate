@@ -82,7 +82,11 @@ gulp.task('watch:modularize-styles', () => {
 });
 
 gulp.task('watch:polymer-build', () => {
-    return gulp.watch('./src/**/*.html', ['polymer-build']);
+    return gulp.watch([
+        './src/blocks/**/*.*',
+        './src/elements/**/*.*',
+        './fragments/**/*.*',
+    ], ['polymer-build']);
 });
 
 gulp.task('watch', ['watch:core', 'watch:app', 'watch:sass', 'watch:modularize-styles']);
