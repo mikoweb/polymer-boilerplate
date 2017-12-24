@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Check core globals</title>
+    <script src="../../bundle/core.js"></script>
+    <script src="../../bundle/polyfills/webcomponents-loader.js"></script>
+    <script src="../../bower_components/web-component-tester/browser.js"></script>
+</head>
+<body>
+<script>
+    suite('use-core-globals', () => {
+        test('axios', () => {
+            const client = axios.create({});
+            expect(client).to.have.property('get');
+            expect(client).to.have.property('post');
+            expect(client).to.have.property('put');
+            expect(client).to.have.property('patch');
+            expect(client).to.have.property('delete');
+            expect(client).to.have.property('head');
+            expect(client).to.have.property('options');
+        });
+
+        test('objectmodel', () => {
+            const Foo = Model({
+                foo: String
+            });
+
+            const model = new Foo({
+                foo: 'bar'
+            });
+
+            expect(Foo).to.be.an.instanceof(Model);
+            expect(model).to.be.an.instanceof(Foo);
+            expect('bar').to.be.equal(model.foo);
+        });
+
+        test('model-persistence', () => {
+            expect(modelPersist).to.have.property('modelHelpers');
+            expect(modelPersist).to.have.property('HTTPModelManager');
+        });
+
+        test('element-view', () => {
+            const view = new ElementView(document.createElement('div'));
+            expect(view).to.be.an.instanceof(ElementView);
+        });
+    });
+</script>
+</body>
+</html>
