@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "bootstrap": "4.0.0-beta.2",
+    "element-view": "^1.0.1",
     "material-design-color": "^2.3.2",
     "model-persistence": "^1.0.0"
   },
