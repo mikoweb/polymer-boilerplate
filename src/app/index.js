@@ -1,8 +1,8 @@
 import namespace from './core/namespace';
-import Html from './views/html';
+import initializeLayout from './views/layout/initialize';
+
+initializeLayout();
 
 window.App = {};
 
 namespace(window.App);
-
-new Html().render();
