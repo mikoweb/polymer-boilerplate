@@ -1,9 +1,7 @@
-(function (Mn,_,$) {
+(function (ElementView) {
 'use strict';
 
-Mn = Mn && Mn.hasOwnProperty('default') ? Mn['default'] : Mn;
-_ = _ && _.hasOwnProperty('default') ? _['default'] : _;
-$ = $ && $.hasOwnProperty('default') ? $['default'] : $;
+ElementView = ElementView && ElementView.hasOwnProperty('default') ? ElementView['default'] : ElementView;
 
 /**
  * Make read-only properties.
@@ -28,8 +26,8 @@ var namespace = function namespace(object) {
     });
 };
 
-var DrawerToggle = function (_Mn$View) {
-    babelHelpers.inherits(DrawerToggle, _Mn$View);
+var DrawerToggle = function (_ElementView) {
+    babelHelpers.inherits(DrawerToggle, _ElementView);
 
     function DrawerToggle() {
         babelHelpers.classCallCheck(this, DrawerToggle);
@@ -37,155 +35,189 @@ var DrawerToggle = function (_Mn$View) {
     }
 
     babelHelpers.createClass(DrawerToggle, [{
-        key: 'template',
-        value: function template() {
-            return _.noop;
-        }
-    }, {
-        key: 'el',
-        value: function el() {
-            return '.drawer-toggle';
-        }
-    }, {
-        key: 'events',
-        value: function events() {
-            return {
-                'click': '_onClick'
-            };
-        }
+        key: '_onClick',
+
+
         /**
-         * @param {Event} e
+         * @param {Event} event
          * @private
          */
+        value: function _onClick(event) {
+            var id = event.target.getAttribute('data-drawer-id');
 
-    }, {
-        key: '_onClick',
-        value: function _onClick(e) {
-            var id = e.target.getAttribute('data-drawer-id');
-
-            if (_.isString(id) && id.length > 0) {
+            if (typeof id === 'string' && id.length > 0) {
                 var drawer = document.getElementById(id);
 
-                if (drawer) {
+                if (drawer !== null) {
                     drawer.toggle();
                 }
             }
         }
+    }, {
+        key: 'events',
+
+        /**
+         * @inheritDoc
+         */
+        get: function get() {
+            return {
+                click: this._onClick
+            };
+        }
     }]);
     return DrawerToggle;
-}(Mn.View);
+}(ElementView);
 
-var PageProgress = function (_Mn$View) {
-    babelHelpers.inherits(PageProgress, _Mn$View);
+var PageProgress = function (_ElementView) {
+    babelHelpers.inherits(PageProgress, _ElementView);
 
-    function PageProgress() {
+    /**
+     * @param {HTMLElement} htmlElement
+     */
+    function PageProgress(htmlElement) {
         babelHelpers.classCallCheck(this, PageProgress);
-        return babelHelpers.possibleConstructorReturn(this, (PageProgress.__proto__ || Object.getPrototypeOf(PageProgress)).apply(this, arguments));
+
+        var _this = babelHelpers.possibleConstructorReturn(this, (PageProgress.__proto__ || Object.getPrototypeOf(PageProgress)).call(this, htmlElement));
+
+        _this.root.classList.add('active');
+        _this._reset();
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function () {
+                _this._afterDomReady();
+            });
+        } else {
+            _this._afterDomReady();
+        }
+
+        WCReady(function () {
+            _this._wcReady = true;
+            _this._loadUpdate();
+        });
+
+        window.addEventListener('beforeunload', function () {
+            _this._reset();
+            _this.root.classList.add('active');
+            _this.root.setAttribute('value', '5');
+        });
+        return _this;
     }
 
+    /**
+     * @private
+     */
+
+
     babelHelpers.createClass(PageProgress, [{
-        key: 'initialize',
-        value: function initialize() {
-            var _this2 = this;
-
-            this._reset();
-
-            $(document).ready(function () {
-                _this2._docReady = true;
-                _this2._loadUpdate();
-            });
-
-            WCReady(function () {
-                _this2._wcReady = true;
-                _this2._loadUpdate();
-            });
-
-            window.addEventListener('beforeunload', function () {
-                _this2._reset();
-                _this2.$el.addClass('active');
-                _this2.$el.attr('value', '5');
-            });
-        }
-    }, {
-        key: 'template',
-        value: function template() {
-            return _.noop;
-        }
-    }, {
-        key: 'el',
-        value: function el() {
-            return '#page-progress';
-        }
-    }, {
-        key: 'onRender',
-        value: function onRender() {
-            this.$el.addClass('active');
-        }
-    }, {
         key: '_reset',
         value: function _reset() {
             this._loaded = false;
             this._docReady = false;
             this._wcReady = false;
-            this.$el.attr('value', '0');
+            this.root.setAttribute('value', '0');
         }
+
+        /**
+         * @private
+         */
+
     }, {
         key: '_loadUpdate',
         value: function _loadUpdate() {
-            var _this3 = this;
+            var _this2 = this;
 
             if (this._docReady && this._wcReady) {
-                this.$el.attr('value', '100');
+                this.root.setAttribute('value', '100');
                 setTimeout(function () {
-                    _this3.$el.removeClass('active');
+                    _this2.root.classList.remove('active');
                 }, 500);
                 this._loaded = true;
             } else if (this._docReady || this._wcReady) {
-                this.$el.attr('value', '40');
+                this.root.setAttribute('value', '40');
             } else {
-                this.$el.attr('value', '0');
+                this.root.setAttribute('value', '0');
             }
+        }
+
+        /**
+         * @private
+         */
+
+    }, {
+        key: '_afterDomReady',
+        value: function _afterDomReady() {
+            this._docReady = true;
+            this._loadUpdate();
         }
     }]);
     return PageProgress;
-}(Mn.View);
+}(ElementView);
 
-var Html = function (_Mn$View) {
-    babelHelpers.inherits(Html, _Mn$View);
+var initialize$1 = function initialize() {
+    WCReady(function () {
+        var progress = document.querySelector('#page-progress');
 
-    function Html() {
-        babelHelpers.classCallCheck(this, Html);
-        return babelHelpers.possibleConstructorReturn(this, (Html.__proto__ || Object.getPrototypeOf(Html)).apply(this, arguments));
-    }
+        if (progress !== null) {
+            new PageProgress(progress);
+        }
 
-    babelHelpers.createClass(Html, [{
-        key: 'tagName',
-        value: function tagName() {
-            return 'html';
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+            for (var _iterator = document.querySelectorAll('*[wc-hidden], *[wc-lazy]')[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                var el = _step.value;
+
+                el.classList.add('ready');
+            }
+        } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion && _iterator.return) {
+                    _iterator.return();
+                }
+            } finally {
+                if (_didIteratorError) {
+                    throw _iteratorError;
+                }
+            }
         }
-    }, {
-        key: 'template',
-        value: function template() {
-            return _.noop;
+
+        var _iteratorNormalCompletion2 = true;
+        var _didIteratorError2 = false;
+        var _iteratorError2 = undefined;
+
+        try {
+            for (var _iterator2 = document.querySelectorAll('.drawer-toggle')[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                var _el = _step2.value;
+
+                new DrawerToggle(_el);
+            }
+        } catch (err) {
+            _didIteratorError2 = true;
+            _iteratorError2 = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                    _iterator2.return();
+                }
+            } finally {
+                if (_didIteratorError2) {
+                    throw _iteratorError2;
+                }
+            }
         }
-    }, {
-        key: 'onRender',
-        value: function onRender() {
-            WCReady(function () {
-                $('[wc-hidden], [wc-lazy]').addClass('ready');
-                new DrawerToggle().render();
-                new PageProgress().render();
-            });
-        }
-    }]);
-    return Html;
-}(Mn.View);
+    });
+};
+
+initialize$1();
 
 window.App = {};
 
 namespace(window.App);
 
-new Html().render();
-
-}(Mn,_,$));
+}(ElementView));
 //# sourceMappingURL=app.js.map
