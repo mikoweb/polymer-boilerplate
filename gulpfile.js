@@ -13,12 +13,11 @@ const concat = require('gulp-concat');
 gulp.task('bundle-core', () => {
     return bundle([
         Path.lib('/babel-helpers.js'),
-        Path.lib('/jquery/jquery.js'),
-        Path.nodeModules('/underscore/underscore.js'),
-        Path.nodeModules('/backbone/backbone.js'),
-        Path.lib('/marionette/backbone.marionette.js'),
-        Path.bowerComponents('/wc-ready/index.js'),
-        Path.bowerComponents('/polymer-backbone/src/model/polymer-model.js'),
+        Path.nodeModules('/axios/dist/axios.js'),
+        Path.nodeModules('/objectmodel/dist/object-model.umd.js'),
+        Path.nodeModules('/model-persistence/bundle/model-persistence.js'),
+        Path.nodeModules('/element-view/bundle/element-view.js'),
+        Path.bowerComponents('/wc-ready/index.js')
     ], 'core.js');
 });
 
@@ -83,7 +82,11 @@ gulp.task('watch:modularize-styles', () => {
 });
 
 gulp.task('watch:polymer-build', () => {
-    return gulp.watch('./src/**/*.html', ['polymer-build']);
+    return gulp.watch([
+        './src/blocks/**/*.*',
+        './src/elements/**/*.*',
+        './fragments/**/*.*',
+    ], ['polymer-build']);
 });
 
 gulp.task('watch', ['watch:core', 'watch:app', 'watch:sass', 'watch:modularize-styles']);

@@ -1,7 +1,8 @@
-import name from './namespace';
-import Html from './views/html';
+import namespace from './core/namespace';
+import initializeLayout from './views/layout/initialize';
 
-/** @typedef {Object} window.App */
-name(window, 'App', {});
+initializeLayout();
 
-new Html().render();
+window.App = {};
+
+namespace(window.App);

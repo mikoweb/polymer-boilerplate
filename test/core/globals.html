@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Check core globals</title>
+    <script src="../../bundle/core.js"></script>
+    <script src="../../bundle/polyfills/webcomponents-loader.js"></script>
+    <script src="../../bower_components/web-component-tester/browser.js"></script>
+</head>
+<body>
+<script>
+    suite('check-core-globals', () => {
+        test('babel-helpers', () => {
+            expect(babelHelpers).to.exist;
+            expect(babelHelpers).to.be.a('object');
+        });
+
+        test('axios', () => {
+            expect(axios).to.exist;
+            expect(axios).to.be.a('function');
+        });
+
+        test('objectmodel', () => {
+            expect(Model).to.exist;
+            expect(Model).to.be.a('function');
+        });
+
+        test('model-persistence', () => {
+            expect(modelPersist).to.exist;
+            expect(modelPersist).to.be.a('object');
+        });
+
+        test('element-view', () => {
+            expect(ElementView).to.exist;
+            expect(ElementView).to.be.a('function');
+        });
+    });
+</script>
+</body>
+</html>
