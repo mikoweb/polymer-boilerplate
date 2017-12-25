@@ -36,7 +36,7 @@ Component | Description
 `bundle/core.min.js` it's size `50.6 kB` (13.9 gzipped).
 
 Library | Description
-:---: | :---: | :---: | :---:
+:---: | :---: |
  [Babel helpers](https://www.npmjs.com/package/babel-helpers) | Collection of helper functions used by Babel transforms. 
  [WC es5-adapter](https://github.com/webcomponents/webcomponentsjs#custom-elements-es5-adapterjs) | According to the spec, Custom Elements must be ES6 classes. 
  [WCReady](https://github.com/mikoweb/wc-ready) | Simple function to listen to the `WebComponentsReady` event.
