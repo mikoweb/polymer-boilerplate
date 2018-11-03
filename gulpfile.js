@@ -21,12 +21,12 @@ gulp.task('bundle-core', () => {
     ], 'core.js');
 });
 
-gulp.task('bundle-core-with-es5-adapter', ['bundle-core'], () => {
+gulp.task('bundle-core-with-es5-adapter', gulp.series('bundle-core', () => {
     return gulp.src([
         Path.bowerComponents('/webcomponentsjs/custom-elements-es5-adapter.js'),
         Path.bundle('/core.min.js'),
     ]).pipe(concat('core.min.js')).pipe(gulp.dest(Path.bundle()));
-});
+}));
 
 gulp.task('bundle-webcomponentsjs', () => {
     return webcomponents();
@@ -39,9 +39,9 @@ gulp.task('build-app', () => {
     });
 });
 
-gulp.task('dist-app', ['build-app'], () => {
+gulp.task('dist-app', gulp.series('build-app', () => {
     return bundleUglify(Path.bundle('/app.js'), Path.bundle());
-});
+}));
 
 gulp.task('sass', () => {
     return bundleSass(Path.style('/index.scss'), 'style.css');
@@ -56,29 +56,29 @@ gulp.task('modularize-styles', () => {
         .pipe(gulp.dest("./src"));
 });
 
-gulp.task('polymer-build', ['modularize-styles'], () => {
+gulp.task('polymer-build', gulp.series('modularize-styles', () => {
     return run('npm run polymer-build').exec();
-});
+}));
 
-gulp.task('dist', ['bundle-core-with-es5-adapter', 'bundle-webcomponentsjs', 'dist-app', 'sass',
-    'modularize-styles', 'polymer-build']);
+gulp.task('dist', gulp.series('bundle-core-with-es5-adapter', 'bundle-webcomponentsjs', 'dist-app', 'sass',
+    'modularize-styles', 'polymer-build'));
 
 // Watchers
 
 gulp.task('watch:core', () => {
-    return gulp.watch(Path.lib('/**/*.js'), ['bundle-core-with-es5-adapter']);
+    return gulp.watch(Path.lib('/**/*.js'), gulp.series('bundle-core-with-es5-adapter'));
 });
 
 gulp.task('watch:app', () => {
-    return gulp.watch('./src/app/**/*.js', ['dist-app']);
+    return gulp.watch('./src/app/**/*.js', gulp.series('dist-app'));
 });
 
 gulp.task('watch:sass', () => {
-    return gulp.watch(Path.style('/**/*.scss'), ['sass']);
+    return gulp.watch(Path.style('/**/*.scss'), gulp.series('sass'));
 });
 
 gulp.task('watch:modularize-styles', () => {
-    return gulp.watch('./src/**/*.scss', ['modularize-styles']);
+    return gulp.watch('./src/**/*.scss', gulp.series('modularize-styles'));
 });
 
 gulp.task('watch:polymer-build', () => {
@@ -86,7 +86,7 @@ gulp.task('watch:polymer-build', () => {
         './src/blocks/**/*.*',
         './src/elements/**/*.*',
         './fragments/**/*.*',
-    ], ['polymer-build']);
+    ], gulp.series('polymer-build'));
 });
 
-gulp.task('watch', ['watch:core', 'watch:app', 'watch:sass', 'watch:modularize-styles']);
+gulp.task('watch', gulp.parallel('watch:core', 'watch:app', 'watch:sass', 'watch:modularize-styles'));
