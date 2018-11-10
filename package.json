@@ -2,9 +2,11 @@
   "name": "polymer-boilerplate-app",
   "version": "0.1.0",
   "main": "pages/index.html",
+  "private": true,
   "scripts": {
     "babel-external-helpers": "babel-external-helpers",
     "copy-babel-helpers": "babel-external-helpers > ./lib/babel-helpers.js",
+    "polymer": "polymer",
     "polymer-build": "polymer build",
     "serve": "polymer serve",
     "test": "polymer test"
@@ -13,10 +15,17 @@
     "node": ">10.0.0"
   },
   "dependencies": {
+    "@polymer/app-layout": "^3.0.1",
+    "@polymer/iron-iconset-svg": "^3.0.1",
+    "@polymer/paper-icon-button": "^3.0.1",
+    "@polymer/paper-progress": "^3.0.1",
+    "@polymer/polymer": "^3.1.0",
+    "@webcomponents/webcomponentsjs": "^2.1.3",
     "bootstrap": "^4.1.3",
     "element-view": "^1.0.1",
     "material-design-color": "^2.3.2",
-    "model-persistence": "^1.0.2"
+    "model-persistence": "^1.0.2",
+    "wc-ready": "^1.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
@@ -38,9 +47,11 @@
     "gulp-style-modules": "^0.1.0",
     "gulp-uglify": "^3.0.1",
     "node-sass-tilde-importer": "^1.0.2",
+    "polymer-cli": "^1.8.1",
     "rollup": "^0.66.6",
     "rollup-plugin-babel": "^4.0.3",
     "rollup-plugin-commonjs": "^9.2.0",
-    "rollup-plugin-node-resolve": "^3.4.0"
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "web-component-tester": "^6.9.0"
   }
 }

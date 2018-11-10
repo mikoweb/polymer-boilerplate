@@ -17,13 +17,13 @@ gulp.task('bundle-core', () => {
         Path.nodeModules('/objectmodel/dist/object-model.umd.js'),
         Path.nodeModules('/model-persistence/bundle/model-persistence.js'),
         Path.nodeModules('/element-view/bundle/element-view.js'),
-        Path.bowerComponents('/wc-ready/index.js')
+        Path.nodeModules('/wc-ready/index.js')
     ], 'core.js');
 });
 
 gulp.task('bundle-core-with-es5-adapter', gulp.series('bundle-core', () => {
     return gulp.src([
-        Path.bowerComponents('/webcomponentsjs/custom-elements-es5-adapter.js'),
+        Path.nodeModules('/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js'),
         Path.bundle('/core.min.js'),
     ]).pipe(concat('core.min.js')).pipe(gulp.dest(Path.bundle()));
 }));
@@ -35,7 +35,7 @@ gulp.task('bundle-webcomponentsjs', () => {
 gulp.task('build-app', () => {
     return rollupBundle('./src/app/index.js', 'app.js', {
         externalHelpers: true,
-        exclude: ['node_modules/**', 'bower_components/**'],
+        exclude: ['node_modules/**'],
     });
 });
 
@@ -57,7 +57,7 @@ gulp.task('modularize-styles', () => {
 });
 
 gulp.task('polymer-build', gulp.series('modularize-styles', () => {
-    return run('npm run polymer-build').exec();
+    return run('npm run polymer-build', {}).exec();
 }));
 
 gulp.task('dist', gulp.series('bundle-core-with-es5-adapter', 'bundle-webcomponentsjs', 'dist-app', 'sass',
