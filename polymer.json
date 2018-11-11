@@ -1,14 +1,15 @@
 {
+  "npm": true,
   "entrypoint": "pages/index.html",
-  "shell": "fragments/app.html",
+  "shell": "fragments/components.js",
   "fragments": [],
   "lint": {
     "rules": [
-      "polymer-2"
+      "polymer-3"
     ]
   },
   "builds": [{
-    "name": "bundled",
+    "name": "prod",
     "preset": "es5-bundled",
     "addServiceWorker": false,
     "addPushManifest": false

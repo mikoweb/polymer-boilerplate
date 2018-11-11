@@ -2,6 +2,8 @@
   --paper-progress-transition-duration: .5s;
   --paper-progress-transition-timing-function: ease;
   --paper-progress-transition-transition-delay: 0;
+  --paper-progress-active-color: var(--paper-light-blue-500);
+  --paper-progress-secondary-color: var(--paper-light-blue-100);
   position: fixed;
   top: 0;
   left: 0;
