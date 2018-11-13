@@ -7,7 +7,8 @@ module.exports = () => {
         new Promise(function(resolve, reject) {
             gulp
                 .src([
-                    Path.nodeModules('/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js')
+                    Path.nodeModules('/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js'),
+                    Path.nodeModules('/@polymer/esm-amd-loader/lib/esm-amd-loader.min.js')
                 ])
                 .pipe(gulp.dest(Path.bundle('/polyfills')))
                 .on('error', reject)

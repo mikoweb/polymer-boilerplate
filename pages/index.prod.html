@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <script>document.querySelector('html').classList.remove('no-js');</script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Index page</title>
+    <link href="../bundle/style.css" rel="stylesheet">
+    <script src="../bundle/core.min.js"></script>
+    <script src="../bundle/polyfills/webcomponents-loader.js"></script>
+    <script crossorigin>define(['../build/prod/fragments/components.js']);</script>
+</head>
+<body>
+    <paper-progress value="0" secondary-progress="80" class="page-progress active transiting"
+                    id="page-progress"></paper-progress>
+    <header class="header">
+        <div class="header-toolbar">
+            <paper-icon-button class="drawer-toggle header-toolbar__item" icon="menu" data-drawer-id="drawer"
+                               aria-label="Open Menu" role="button"></paper-icon-button>
+            <h1 class="header__title header-toolbar__item">Page Name</h1>
+        </div>
+        <app-drawer id="drawer" swipe-open wc-hidden>
+            <div class="header-toolbar no-js-hidden">
+                <paper-icon-button class="drawer-toggle header-toolbar__item" icon="menu" data-drawer-id="drawer"
+                                   aria-label="Close Menu" role="button"></paper-icon-button>
+                <span class="header__title header-toolbar__item">Page Name</span>
+            </div>
+            <nav>
+                <ul class="drawer-menu">
+                    <li class="drawer-menu__item">
+                        <a class="drawer-menu__link" href="/">
+                            Lorem ipsum
+                        </a>
+                    </li>
+                    <li class="drawer-menu__item">
+                        <a class="drawer-menu__link" href="/">
+                            Cras vel lorem
+                        </a>
+                    </li>
+                    <li class="drawer-menu__item">
+                        <a class="drawer-menu__link" href="/">
+                            Donec venenatis
+                        </a>
+                    </li>
+                    <li class="drawer-menu__item">
+                        <a class="drawer-menu__link" href="/">
+                            Phasellus ornare
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </app-drawer>
+    </header>
+    <script src="../bundle/app.min.js"></script>
+</body>
+</html>

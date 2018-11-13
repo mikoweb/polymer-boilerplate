@@ -33,6 +33,7 @@
     "@babel/plugin-external-helpers": "^7.0.0",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
+    "@polymer/esm-amd-loader": "^1.0.3",
     "babel-eslint": "^10.0.1",
     "chalk": "^2.4.1",
     "cross-spawn": "~6.0.5",

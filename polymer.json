@@ -3,6 +3,10 @@
   "entrypoint": "pages/index.html",
   "shell": "fragments/components.js",
   "fragments": [],
+  "sources": [
+    "src/blocks/**/*",
+    "src/elements/**/*"
+  ],
   "lint": {
     "rules": [
       "polymer-3"

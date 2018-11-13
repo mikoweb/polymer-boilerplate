@@ -25,6 +25,7 @@ gulp.task('bundle-core-with-es5-adapter', gulp.series('bundle-core', () => {
     return gulp.src([
         Path.nodeModules('/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js'),
         Path.bundle('/core.min.js'),
+        Path.nodeModules('/@polymer/esm-amd-loader/lib/esm-amd-loader.min.js'),
     ]).pipe(concat('core.min.js')).pipe(gulp.dest(Path.bundle()));
 }));
 
