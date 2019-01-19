@@ -16,8 +16,7 @@ gulp.task('bundle-core', () => {
         Path.nodeModules('/axios/dist/axios.js'),
         Path.nodeModules('/objectmodel/dist/object-model.umd.js'),
         Path.nodeModules('/model-persistence/bundle/model-persistence.js'),
-        Path.nodeModules('/element-view/bundle/element-view.js'),
-        Path.nodeModules('/wc-ready/index.js')
+        Path.nodeModules('/element-view/bundle/element-view.js')
     ], 'core.js');
 });
 
