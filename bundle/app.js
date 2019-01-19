@@ -108,6 +108,52 @@
     });
   };
 
+  var listeners = [];
+  var ready = false;
+  var elements = document.querySelectorAll('*[wc-hidden], *[wc-lazy], *[wc-ready]');
+  var promises = [];
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = elements[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var el = _step.value;
+      promises.push(window.customElements.whenDefined(el.localName));
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return != null) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+
+  Promise.all(promises).then(function () {
+    ready = true;
+    listeners.forEach(function (listener) {
+      return listener();
+    });
+    listeners = [];
+    document.body.classList.add('layout-ready');
+  });
+  var layoutReady = (function (listener) {
+    if (typeof listener === 'function') {
+      if (ready) {
+        listener();
+      } else {
+        listeners.push(listener);
+      }
+    }
+  });
+
   var DrawerToggle =
   /*#__PURE__*/
   function (_ElementView) {
@@ -180,8 +226,8 @@
         _this._afterDomReady();
       }
 
-      WCReady(function () {
-        _this._wcReady = true;
+      layoutReady(function () {
+        _this._layoutReady = true;
 
         _this._loadUpdate();
       });
@@ -190,7 +236,7 @@
 
         _this.root.classList.add('active');
 
-        _this.root.setAttribute('value', '5');
+        _this.root.value = 0;
       });
       return _this;
     }
@@ -204,8 +250,8 @@
       value: function _reset() {
         this._loaded = false;
         this._docReady = false;
-        this._wcReady = false;
-        this.root.setAttribute('value', '0');
+        this._layoutReady = false;
+        this.root.value = 0;
       }
       /**
        * @private
@@ -216,16 +262,16 @@
       value: function _loadUpdate() {
         var _this2 = this;
 
-        if (this._docReady && this._wcReady) {
-          this.root.setAttribute('value', '100');
+        if (this._docReady && this._layoutReady) {
+          this.root.value = 100;
           setTimeout(function () {
             _this2.root.classList.remove('active');
           }, 500);
           this._loaded = true;
-        } else if (this._docReady || this._wcReady) {
-          this.root.setAttribute('value', '40');
+        } else if (this._docReady || this._layoutReady) {
+          this.root.value = 40;
         } else {
-          this.root.setAttribute('value', '0');
+          this.root.value = 0;
         }
       }
       /**
@@ -245,7 +291,7 @@
   }(ElementView);
 
   var initialize = function initialize() {
-    WCReady(function () {
+    layoutReady(function () {
       var progress = document.querySelector('#page-progress');
 
       if (progress !== null) {
@@ -257,7 +303,7 @@
       var _iteratorError = undefined;
 
       try {
-        for (var _iterator = document.querySelectorAll('*[wc-hidden], *[wc-lazy]')[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        for (var _iterator = document.querySelectorAll('*[wc-hidden], *[wc-lazy], *[wc-ready]')[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var el = _step.value;
           el.classList.add('ready');
         }
