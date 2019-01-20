@@ -9,6 +9,8 @@ const stylemod = require('gulp-polymer-styles');
 const sass = require('gulp-sass');
 const run = require('gulp-run');
 const concat = require('gulp-concat');
+const template = require('gulp-template');
+const fs = require('fs');
 
 gulp.task('bundle-core', () => {
     return bundle([
@@ -56,7 +58,18 @@ gulp.task('modularize-styles', () => {
         .pipe(gulp.dest("./src"));
 });
 
-gulp.task('polymer-build', gulp.series('modularize-styles', () => {
+gulp.task('shared-styles-build', () => {
+    return bundleSass(Path.style('/shared-styles.scss'), 'shared-styles.css');
+});
+
+gulp.task('shared-styles', gulp.series('shared-styles-build', () => {
+    return gulp.src('./gulp/template/shared-styles.js')
+        .pipe(template({css: fs.readFileSync(Path.bundle('/shared-styles.css'), {encoding: 'utf8'})
+                .replace(/\\/gm, '\\\\')}))
+        .pipe(gulp.dest('./src/style-modules'));
+}));
+
+gulp.task('polymer-build', gulp.series('modularize-styles', 'shared-styles', () => {
     return run('npm run polymer-build', {}).exec();
 }));
 
@@ -74,7 +87,7 @@ gulp.task('watch:app', () => {
 });
 
 gulp.task('watch:sass', () => {
-    return gulp.watch(Path.style('/**/*.scss'), gulp.series('sass'));
+    return gulp.watch(Path.style('/**/*.scss'), gulp.series('sass', 'shared-styles'));
 });
 
 gulp.task('watch:modularize-styles', () => {
@@ -85,6 +98,7 @@ gulp.task('watch:polymer-build', () => {
     return gulp.watch([
         './src/blocks/**/*.*',
         './src/elements/**/*.*',
+        './src/style-modules/**/*.*',
         './fragments/**/*.*',
     ], gulp.series('polymer-build'));
 });

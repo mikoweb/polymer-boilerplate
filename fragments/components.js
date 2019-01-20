@@ -1,6 +1,9 @@
 // icons
 import '../src/elements/icons.js';
 
+// style modules
+import '../src/style-modules/shared-styles.js';
+
 // elements
 import '../src/elements/hello-element/hello-element.js';
 

@@ -2,6 +2,7 @@ import { html } from '@polymer/polymer/polymer-element.js';
 import style from './style.js';
 
 export default html`${style}
+<style include="shared-styles"></style>
 <div class="hello-element">
     <h1>
         Hello [[userName]]!

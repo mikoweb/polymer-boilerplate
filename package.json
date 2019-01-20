@@ -45,6 +45,7 @@
     "gulp-run": "^1.7.1",
     "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.4",
+    "gulp-template": "^5.0.0",
     "gulp-uglify": "^3.0.1",
     "node-sass-tilde-importer": "^1.0.2",
     "polymer-cli": "^1.9.5",
