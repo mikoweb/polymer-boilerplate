@@ -1,15 +1,16 @@
+import layoutReady from '../../layoutReady';
 import DrawerToggle from './DrawerToggle';
 import PageProgress from './PageProgress';
 
 const initialize = () => {
-    WCReady(() => {
+    layoutReady(() => {
         const progress = document.querySelector('#page-progress');
 
         if (progress !== null) {
             new PageProgress(progress);
         }
 
-        for (const el of document.querySelectorAll('*[wc-hidden], *[wc-lazy]')) {
+        for (const el of document.querySelectorAll('*[wc-hidden], *[wc-lazy], *[wc-ready]')) {
             el.classList.add('ready');
         }
 

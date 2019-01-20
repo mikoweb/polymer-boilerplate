@@ -3,19 +3,16 @@
  */
 class Path {
     static bundle(path = '') {
-        return './bundle'.concat(path);
+        return `./bundle${path}`;
     }
     static lib(path = '') {
-        return './lib'.concat(path);
+        return `./lib${path}`;
     }
     static nodeModules(path = '') {
-        return './node_modules'.concat(path);
-    }
-    static bowerComponents(path = '') {
-        return './bower_components'.concat(path);
+        return `./node_modules${path}`;
     }
     static style(path = '') {
-        return './style'.concat(path);
+        return `./style${path}`;
     }
 }
 
