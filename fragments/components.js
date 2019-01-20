@@ -1,6 +1,9 @@
 // icons
 import '../src/elements/icons.js';
 
+// elements
+import '../src/elements/hello-element/hello-element.js';
+
 // external elements
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/paper-progress/paper-progress.js';
