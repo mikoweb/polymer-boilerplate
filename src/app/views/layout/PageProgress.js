@@ -46,15 +46,21 @@ export default class PageProgress extends ElementView {
      */
     _loadUpdate() {
         if (this._docReady && this._layoutReady) {
-            this.root.value = 100;
+            setTimeout(() => {
+                this.root.value = 100;
+            }, 100);
             setTimeout(() => {
                 this.root.classList.remove('active');
-            }, 500);
+            }, 1000);
             this._loaded = true;
         } else if (this._docReady || this._layoutReady) {
-            this.root.value = 40;
+            setTimeout(() => {
+                this.root.value = 40;
+            }, 100);
         } else {
-            this.root.value = 0;
+            setTimeout(() => {
+                this.root.value = 0;
+            }, 100);
         }
     }
 
