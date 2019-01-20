@@ -1,5 +1,6 @@
 {
   "npm": true,
+  "moduleResolution": "node",
   "entrypoint": "pages/index.html",
   "shell": "fragments/components.js",
   "fragments": [],
