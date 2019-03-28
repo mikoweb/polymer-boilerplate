@@ -5,24 +5,9 @@
     <title>Test Webcomponents Polyfills</title>
     <script src="../../bundle/core.js"></script>
     <script src="../../bundle/polyfills/webcomponents-loader.js"></script>
-    <script src="../../bower_components/web-component-tester/browser.js"></script>
-    <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+    <script src="../../node_modules/wct-browser-legacy/browser.js"></script>
 </head>
 <body>
-    <script>
-        let ready = false;
-        let delayedReady = false;
-
-        WCReady(() => {
-            ready = true;
-        });
-
-        setTimeout(() => {
-            WCReady(() => {
-                delayedReady = true;
-            });
-        }, 200);
-    </script>
     <dom-module id="test-element">
         <template>
             <p class="paragraph">Lorem Ipsum</p>
@@ -33,28 +18,24 @@
             <test-element></test-element>
         </template>
     </test-fixture>
-    <script>
+    <script type="module">
+        import { PolymerElement } from '../../node_modules/@polymer/polymer/polymer-element.js';
+
         suite('polymer', () => {
-            test('WebComponentsReady', (done) => {
-                const interval = setInterval(() => {
-                    if (ready && delayedReady) {
-                        clearInterval(interval);
-                        assert.isOk(true);
-                        done();
-                    }
-                }, 50);
+            let element;
+
+            setup(function() {
+                element = fixture('Fixture');
             });
 
             test('Test dom-bind element', () => {
-                class TestElement extends Polymer.Element {
+                class TestElement extends PolymerElement {
                     static get is() {
                         return 'test-element';
                     }
                 }
 
                 window.customElements.define(TestElement.is, TestElement);
-
-                const element = fixture('Fixture');
                 assert.equal('Lorem Ipsum', element.shadowRoot.querySelector('.paragraph').textContent);
             });
         });
