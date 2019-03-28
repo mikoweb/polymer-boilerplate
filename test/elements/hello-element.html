@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Hello Element</title>
+    <script src="../../bundle/polyfills/webcomponents-loader.js"></script>
+    <script src="../../node_modules/wct-browser-legacy/browser.js"></script>
+</head>
+<body>
+    <test-fixture id="Fixture">
+        <template>
+            <hello-element user-name="Test User"></hello-element>
+        </template>
+    </test-fixture>
+    <script type="module">
+        import '../../src/elements/hello-element/hello-element.js';
+
+        suite('<hello-element>', () => {
+            test('Test element content', () => {
+                const element = fixture('Fixture');
+                assert.equal('Hello Test User!', element.shadowRoot.querySelector('h1').textContent.trim());
+            });
+        });
+    </script>
+</body>
+</html>
