@@ -1,6 +1,7 @@
-import layoutReady from '../../layoutReady';
-import DrawerToggle from './DrawerToggle';
-import PageProgress from './PageProgress';
+import layoutReady from "../../layoutReady";
+import DrawerToggle from "./DrawerToggle";
+import PageProgress from "./PageProgress";
+import FormBehavior from "../FormBehavior";
 
 const initialize = () => {
     layoutReady(() => {
@@ -16,6 +17,10 @@ const initialize = () => {
 
         for (const el of document.querySelectorAll('.drawer-toggle')) {
             new DrawerToggle(el);
+        }
+
+        for (const el of document.querySelectorAll('.form-behavior')) {
+            new FormBehavior(el);
         }
     });
 };

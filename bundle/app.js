@@ -205,6 +205,62 @@
       return PageProgress;
     }(ElementView);
 
+    var FormBehavior = /*#__PURE__*/function (_ElementView) {
+      babelHelpers.inherits(FormBehavior, _ElementView);
+
+      function FormBehavior() {
+        babelHelpers.classCallCheck(this, FormBehavior);
+        return babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(FormBehavior).apply(this, arguments));
+      }
+
+      babelHelpers.createClass(FormBehavior, [{
+        key: "_onKeyPress",
+
+        /**
+         * @param {Event} event
+         * @private
+         */
+        value: function _onKeyPress(event) {
+          if (event.keyCode === 13) {
+            this._root.submit();
+          }
+        }
+        /**
+         * @param {Event} event
+         * @private
+         */
+
+      }, {
+        key: "_onButtonSubmit",
+        value: function _onButtonSubmit(event) {
+          var hidden = document.createElement('input');
+          hidden.hidden = true;
+          hidden.name = event.target.getAttribute('name');
+          hidden.value = '1';
+          event.target.parentElement.appendChild(hidden);
+
+          this._root.submit();
+        }
+      }, {
+        key: "events",
+
+        /**
+         * @inheritDoc
+         */
+        get: function get() {
+          return {
+            'paper-input, input': {
+              keypress: this._onKeyPress
+            },
+            '*[type="submit"]': {
+              click: this._onButtonSubmit
+            }
+          };
+        }
+      }]);
+      return FormBehavior;
+    }(ElementView);
+
     var initialize = function initialize() {
       layoutReady(function () {
         var progress = document.querySelector('#page-progress');
@@ -260,11 +316,37 @@
             }
           }
         }
+
+        var _iteratorNormalCompletion3 = true;
+        var _didIteratorError3 = false;
+        var _iteratorError3 = undefined;
+
+        try {
+          for (var _iterator3 = document.querySelectorAll('.form-behavior')[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+            var _el2 = _step3.value;
+            new FormBehavior(_el2);
+          }
+        } catch (err) {
+          _didIteratorError3 = true;
+          _iteratorError3 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
+              _iterator3.return();
+            }
+          } finally {
+            if (_didIteratorError3) {
+              throw _iteratorError3;
+            }
+          }
+        }
       });
     };
 
     initialize();
-    window.App = {};
+    window.App = {
+      FormBehavior: FormBehavior
+    };
     namespace(window.App);
 
 }(ElementView));
