@@ -11,6 +11,7 @@ const run = require('gulp-run');
 const concat = require('gulp-concat');
 const template = require('gulp-template');
 const fs = require('fs');
+const replace = require('gulp-replace');
 
 gulp.task('bundle-core', () => {
     return bundle([
@@ -46,9 +47,24 @@ gulp.task('dist-app', gulp.series('build-app', () => {
     return bundleUglify(Path.bundle('/app.js'), Path.bundle());
 }));
 
-gulp.task('sass', () => {
+gulp.task('sass-main', () => {
     return bundleSass(Path.style('/index.scss'), 'style.css');
 });
+
+gulp.task('sass-polymer-custom-style', () => {
+    return bundleSass(Path.style('/polymer-custom-style.scss'), 'polymer-custom-style.css');
+});
+
+gulp.task('polymer-custom-style-html', gulp.series('sass-polymer-custom-style', () => {
+    return gulp.src('./pages/*.html')
+        .pipe(replace(/(<style is="custom-style" data-compiled\b[^>]*>)[^<>]*(<\/style>)/g, () => {
+            return '<style is="custom-style" data-compiled>'
+                + fs.readFileSync(Path.bundle('/polymer-custom-style.css'), {encoding: 'utf8'})
+                + '        </style>'
+            ;
+        }))
+        .pipe(gulp.dest('./pages/'));
+}));
 
 gulp.task('modularize-styles', () => {
     return gulp.src('./src/**/*.scss')
@@ -74,8 +90,8 @@ gulp.task('polymer-build', gulp.series('modularize-styles', 'shared-styles', () 
     return run('npm run polymer-build', {}).exec();
 }));
 
-gulp.task('dist', gulp.series('bundle-core-with-es5-adapter', 'bundle-webcomponentsjs', 'dist-app', 'sass',
-    'modularize-styles', 'polymer-build'));
+gulp.task('dist', gulp.series('bundle-core-with-es5-adapter', 'bundle-webcomponentsjs', 'dist-app', 'sass-main',
+    'polymer-custom-style-html', 'modularize-styles', 'polymer-build'));
 
 // Watchers
 
@@ -88,7 +104,8 @@ gulp.task('watch:app', () => {
 });
 
 gulp.task('watch:sass', () => {
-    return gulp.watch(Path.style('/**/*.scss'), gulp.series('sass', 'shared-styles'));
+    return gulp.watch(Path.style('/**/*.scss'), gulp.series('sass-main', 'polymer-custom-style-html',
+        'shared-styles'));
 });
 
 gulp.task('watch:modularize-styles', () => {
