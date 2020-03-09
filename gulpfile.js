@@ -18,7 +18,8 @@ gulp.task('bundle-core', () => {
         Path.nodeModules('/axios/dist/axios.js'),
         Path.nodeModules('/objectmodel/dist/object-model.umd.js'),
         Path.nodeModules('/model-persistence/bundle/model-persistence.js'),
-        Path.nodeModules('/element-view/bundle/element-view.js')
+        Path.nodeModules('/element-view/bundle/element-view.js'),
+        Path.nodeModules('/web-animations-js/web-animations-next-lite.min.js')
     ], 'core.js');
 });
 

@@ -24,7 +24,8 @@
     "bootstrap": "^4.4.1",
     "element-view": "^1.0.1",
     "material-design-color": "^2.3.2",
-    "model-persistence": "^1.0.2"
+    "model-persistence": "^1.0.2",
+    "web-animations-js": "^2.3.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
