@@ -4,10 +4,10 @@
 
 // Web Components
 @import "wc";
-@import "custom-elements/paper-icon-button";
-@import "custom-elements/paper-progress";
+@import "custom-elements/all-elements";
 
 // Layout
+@import "html";
 @import "header";
 @import "drawer-menu";
 @import "page-progress";
