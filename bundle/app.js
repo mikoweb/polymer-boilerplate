@@ -71,9 +71,7 @@
       }
     });
 
-    var DrawerToggle =
-    /*#__PURE__*/
-    function (_ElementView) {
+    var DrawerToggle = /*#__PURE__*/function (_ElementView) {
       babelHelpers.inherits(DrawerToggle, _ElementView);
 
       function DrawerToggle() {
@@ -114,9 +112,7 @@
       return DrawerToggle;
     }(ElementView);
 
-    var PageProgress =
-    /*#__PURE__*/
-    function (_ElementView) {
+    var PageProgress = /*#__PURE__*/function (_ElementView) {
       babelHelpers.inherits(PageProgress, _ElementView);
 
       /**
