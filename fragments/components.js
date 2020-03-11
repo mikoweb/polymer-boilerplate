@@ -3,6 +3,7 @@ import '../src/elements/icons.js';
 
 // style modules
 import '../src/style-modules/shared-styles.js';
+import '../src/style-modules/css-mixins.js';
 
 // elements
 import '../src/elements/hello-element/hello-element.js';
