@@ -12,8 +12,16 @@ const concat = require('gulp-concat');
 const template = require('gulp-template');
 const fs = require('fs');
 
-gulp.task('bundle-core', () => {
+gulp.task('bundle-core-regenerator-runtime', () => {
+    return rollupBundle('./src/app/regeneratorRuntime.js', 'regeneratorRuntime.js', {
+        externalHelpers: true,
+        exclude: ['node_modules/**'],
+    });
+});
+
+gulp.task('bundle-core', gulp.series('bundle-core-regenerator-runtime', () => {
     return bundle([
+        Path.bundle('/regeneratorRuntime.js'),
         Path.lib('/babel-helpers.js'),
         Path.nodeModules('/axios/dist/axios.js'),
         Path.nodeModules('/objectmodel/dist/object-model.umd.js'),
@@ -21,7 +29,7 @@ gulp.task('bundle-core', () => {
         Path.nodeModules('/element-view/bundle/element-view.js'),
         Path.nodeModules('/web-animations-js/web-animations-next-lite.min.js')
     ], 'core.js');
-});
+}));
 
 gulp.task('bundle-core-with-es5-adapter', gulp.series('bundle-core', () => {
     return gulp.src([
