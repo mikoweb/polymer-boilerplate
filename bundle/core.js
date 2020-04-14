@@ -745,6 +745,8 @@
   var babelHelpers = global.babelHelpers = {};
 
   function _typeof(obj) {
+    "@babel/helpers - typeof";
+
     if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
       babelHelpers.typeof = _typeof = function (obj) {
         return typeof obj;
@@ -763,7 +765,7 @@
 
   function _createRawReactElement(type, props, key, children) {
     if (!REACT_ELEMENT_TYPE) {
-      REACT_ELEMENT_TYPE = typeof Symbol === "function" && Symbol.for && Symbol.for("react.element") || 0xeac7;
+      REACT_ELEMENT_TYPE = typeof Symbol === "function" && Symbol["for"] && Symbol["for"]("react.element") || 0xeac7;
     }
 
     var defaultProps = type && type.defaultProps;
@@ -773,16 +775,6 @@
       props = {
         children: void 0
       };
-    }
-
-    if (props && defaultProps) {
-      for (var propName in defaultProps) {
-        if (props[propName] === void 0) {
-          props[propName] = defaultProps[propName];
-        }
-      }
-    } else if (!props) {
-      props = defaultProps || {};
     }
 
     if (childrenLength === 1) {
@@ -795,6 +787,16 @@
       }
 
       props.children = childArray;
+    }
+
+    if (props && defaultProps) {
+      for (var propName in defaultProps) {
+        if (props[propName] === void 0) {
+          props[propName] = defaultProps[propName];
+        }
+      }
+    } else if (!props) {
+      props = defaultProps || {};
     }
 
     return {
@@ -812,7 +814,7 @@
   function _asyncIterator(iterable) {
     var method;
 
-    if (typeof Symbol === "function") {
+    if (typeof Symbol !== "undefined") {
       if (Symbol.asyncIterator) {
         method = iterable[Symbol.asyncIterator];
         if (method != null) return method.call(iterable);
@@ -864,7 +866,7 @@
         var wrappedAwait = value instanceof babelHelpers.AwaitValue;
         Promise.resolve(wrappedAwait ? value.wrapped : value).then(function (arg) {
           if (wrappedAwait) {
-            resume("next", arg);
+            resume(key === "return" ? "return" : "next", arg);
             return;
           }
 
@@ -993,6 +995,11 @@
 
     if (typeof inner.return === "function") {
       iter.return = function (value) {
+        if (waiting) {
+          waiting = false;
+          return value;
+        }
+
         return pump("return", value);
       };
     }
@@ -1147,7 +1154,7 @@
 
   function _objectSpread(target) {
     for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i] != null ? arguments[i] : {};
+      var source = arguments[i] != null ? Object(arguments[i]) : {};
       var ownKeys = Object.keys(source);
 
       if (typeof Object.getOwnPropertySymbols === 'function') {
@@ -1165,6 +1172,42 @@
   }
 
   babelHelpers.objectSpread = _objectSpread;
+
+  function ownKeys(object, enumerableOnly) {
+    var keys = Object.keys(object);
+
+    if (Object.getOwnPropertySymbols) {
+      var symbols = Object.getOwnPropertySymbols(object);
+      if (enumerableOnly) symbols = symbols.filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      });
+      keys.push.apply(keys, symbols);
+    }
+
+    return keys;
+  }
+
+  function _objectSpread2(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i] != null ? arguments[i] : {};
+
+      if (i % 2) {
+        ownKeys(Object(source), true).forEach(function (key) {
+          babelHelpers.defineProperty(target, key, source[key]);
+        });
+      } else if (Object.getOwnPropertyDescriptors) {
+        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+      } else {
+        ownKeys(Object(source)).forEach(function (key) {
+          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+        });
+      }
+    }
+
+    return target;
+  }
+
+  babelHelpers.objectSpread2 = _objectSpread2;
 
   function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
@@ -1287,7 +1330,7 @@
 
   function _instanceof(left, right) {
     if (right != null && typeof Symbol !== "undefined" && right[Symbol.hasInstance]) {
-      return right[Symbol.hasInstance](left);
+      return !!right[Symbol.hasInstance](left);
     } else {
       return left instanceof right;
     }
@@ -1303,29 +1346,56 @@
 
   babelHelpers.interopRequireDefault = _interopRequireDefault;
 
+  function _getRequireWildcardCache() {
+    if (typeof WeakMap !== "function") return null;
+    var cache = new WeakMap();
+
+    _getRequireWildcardCache = function () {
+      return cache;
+    };
+
+    return cache;
+  }
+
   function _interopRequireWildcard(obj) {
     if (obj && obj.__esModule) {
       return obj;
-    } else {
-      var newObj = {};
+    }
 
-      if (obj != null) {
-        for (var key in obj) {
-          if (Object.prototype.hasOwnProperty.call(obj, key)) {
-            var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {};
+    if (obj === null || typeof obj !== "object" && typeof obj !== "function") {
+      return {
+        default: obj
+      };
+    }
 
-            if (desc.get || desc.set) {
-              Object.defineProperty(newObj, key, desc);
-            } else {
-              newObj[key] = obj[key];
-            }
-          }
+    var cache = _getRequireWildcardCache();
+
+    if (cache && cache.has(obj)) {
+      return cache.get(obj);
+    }
+
+    var newObj = {};
+    var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
+
+    for (var key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
+
+        if (desc && (desc.get || desc.set)) {
+          Object.defineProperty(newObj, key, desc);
+        } else {
+          newObj[key] = obj[key];
         }
       }
-
-      newObj.default = obj;
-      return newObj;
     }
+
+    newObj.default = obj;
+
+    if (cache) {
+      cache.set(obj, newObj);
+    }
+
+    return newObj;
   }
 
   babelHelpers.interopRequireWildcard = _interopRequireWildcard;
@@ -1511,16 +1581,6 @@
 
   babelHelpers.taggedTemplateLiteralLoose = _taggedTemplateLiteralLoose;
 
-  function _temporalRef(val, name) {
-    if (val === babelHelpers.temporalUndefined) {
-      throw new ReferenceError(name + " is not defined - temporal dead zone");
-    } else {
-      return val;
-    }
-  }
-
-  babelHelpers.temporalRef = _temporalRef;
-
   function _readOnlyError(name) {
     throw new Error("\"" + name + "\" is read-only");
   }
@@ -1532,7 +1592,22 @@
   }
 
   babelHelpers.classNameTDZError = _classNameTDZError;
-  babelHelpers.temporalUndefined = {};
+
+  function _temporalUndefined() {}
+
+  babelHelpers.temporalUndefined = _temporalUndefined;
+
+  function _tdzError(name) {
+    throw new ReferenceError(name + " is not defined - temporal dead zone");
+  }
+
+  babelHelpers.tdz = _tdzError;
+
+  function _temporalRef(val, name) {
+    return val === babelHelpers.temporalUndefined ? babelHelpers.tdz(name) : val;
+  }
+
+  babelHelpers.temporalRef = _temporalRef;
 
   function _slicedToArray(arr, i) {
     return babelHelpers.arrayWithHoles(arr) || babelHelpers.iterableToArrayLimit(arr, i) || babelHelpers.nonIterableRest();
@@ -1581,6 +1656,10 @@
   babelHelpers.iterableToArray = _iterableToArray;
 
   function _iterableToArrayLimit(arr, i) {
+    if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) {
+      return;
+    }
+
     var _arr = [];
     var _n = true;
     var _d = false;
@@ -1609,6 +1688,10 @@
   babelHelpers.iterableToArrayLimit = _iterableToArrayLimit;
 
   function _iterableToArrayLimitLoose(arr, i) {
+    if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) {
+      return;
+    }
+
     var _arr = [];
 
     for (var _iterator = arr[Symbol.iterator](), _step; !(_step = _iterator.next()).done;) {
@@ -1644,18 +1727,30 @@
 
   babelHelpers.skipFirstGeneratorNext = _skipFirstGeneratorNext;
 
-  function _toPropertyKey(key) {
-    if (typeof key === "symbol") {
-      return key;
-    } else {
-      return String(key);
+  function _toPrimitive(input, hint) {
+    if (typeof input !== "object" || input === null) return input;
+    var prim = input[Symbol.toPrimitive];
+
+    if (prim !== undefined) {
+      var res = prim.call(input, hint || "default");
+      if (typeof res !== "object") return res;
+      throw new TypeError("@@toPrimitive must return a primitive value.");
     }
+
+    return (hint === "string" ? String : Number)(input);
+  }
+
+  babelHelpers.toPrimitive = _toPrimitive;
+
+  function _toPropertyKey(arg) {
+    var key = babelHelpers.toPrimitive(arg, "string");
+    return typeof key === "symbol" ? key : String(key);
   }
 
   babelHelpers.toPropertyKey = _toPropertyKey;
 
   function _initializerWarningHelper(descriptor, context) {
-    throw new Error('Decorating class property failed. Please ensure that ' + 'proposal-class-properties is enabled and set to use loose mode. ' + 'To use proposal-class-properties in spec mode with decorators, wait for ' + 'the next major version of decorators in stage 2.');
+    throw new Error('Decorating class property failed. Please ensure that ' + 'proposal-class-properties is enabled and runs after the decorators transform.');
   }
 
   babelHelpers.initializerWarningHelper = _initializerWarningHelper;
@@ -1674,7 +1769,7 @@
 
   function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
     var desc = {};
-    Object['ke' + 'ys'](descriptor).forEach(function (key) {
+    Object.keys(descriptor).forEach(function (key) {
       desc[key] = descriptor[key];
     });
     desc.enumerable = !!desc.enumerable;
@@ -1694,7 +1789,7 @@
     }
 
     if (desc.initializer === void 0) {
-      Object['define' + 'Property'](target, property, desc);
+      Object.defineProperty(target, property, desc);
       desc = null;
     }
 
@@ -1721,35 +1816,79 @@
   babelHelpers.classPrivateFieldLooseBase = _classPrivateFieldBase;
 
   function _classPrivateFieldGet(receiver, privateMap) {
-    if (!privateMap.has(receiver)) {
+    var descriptor = privateMap.get(receiver);
+
+    if (!descriptor) {
       throw new TypeError("attempted to get private field on non-instance");
     }
 
-    return privateMap.get(receiver).value;
+    if (descriptor.get) {
+      return descriptor.get.call(receiver);
+    }
+
+    return descriptor.value;
   }
 
   babelHelpers.classPrivateFieldGet = _classPrivateFieldGet;
 
   function _classPrivateFieldSet(receiver, privateMap, value) {
+    var descriptor = privateMap.get(receiver);
+
+    if (!descriptor) {
+      throw new TypeError("attempted to set private field on non-instance");
+    }
+
+    if (descriptor.set) {
+      descriptor.set.call(receiver, value);
+    } else {
+      if (!descriptor.writable) {
+        throw new TypeError("attempted to set read only private field");
+      }
+
+      descriptor.value = value;
+    }
+
+    return value;
+  }
+
+  babelHelpers.classPrivateFieldSet = _classPrivateFieldSet;
+
+  function _classPrivateFieldDestructureSet(receiver, privateMap) {
     if (!privateMap.has(receiver)) {
       throw new TypeError("attempted to set private field on non-instance");
     }
 
     var descriptor = privateMap.get(receiver);
 
-    if (!descriptor.writable) {
-      throw new TypeError("attempted to set read only private field");
-    }
+    if (descriptor.set) {
+      if (!("__destrObj" in descriptor)) {
+        descriptor.__destrObj = {
+          set value(v) {
+            descriptor.set.call(receiver, v);
+          }
 
-    descriptor.value = value;
-    return value;
+        };
+      }
+
+      return descriptor.__destrObj;
+    } else {
+      if (!descriptor.writable) {
+        throw new TypeError("attempted to set read only private field");
+      }
+
+      return descriptor;
+    }
   }
 
-  babelHelpers.classPrivateFieldSet = _classPrivateFieldSet;
+  babelHelpers.classPrivateFieldDestructureSet = _classPrivateFieldDestructureSet;
 
   function _classStaticPrivateFieldSpecGet(receiver, classConstructor, descriptor) {
     if (receiver !== classConstructor) {
       throw new TypeError("Private static access of wrong provenance");
+    }
+
+    if (descriptor.get) {
+      return descriptor.get.call(receiver);
     }
 
     return descriptor.value;
@@ -1762,29 +1901,329 @@
       throw new TypeError("Private static access of wrong provenance");
     }
 
-    if (!descriptor.writable) {
-      throw new TypeError("attempted to set read only private field");
+    if (descriptor.set) {
+      descriptor.set.call(receiver, value);
+    } else {
+      if (!descriptor.writable) {
+        throw new TypeError("attempted to set read only private field");
+      }
+
+      descriptor.value = value;
     }
 
-    descriptor.value = value;
     return value;
   }
 
   babelHelpers.classStaticPrivateFieldSpecSet = _classStaticPrivateFieldSpecSet;
 
-  function _decorate(decorators, factory, superClass) {
+  function _classStaticPrivateMethodGet(receiver, classConstructor, method) {
+    if (receiver !== classConstructor) {
+      throw new TypeError("Private static access of wrong provenance");
+    }
+
+    return method;
+  }
+
+  babelHelpers.classStaticPrivateMethodGet = _classStaticPrivateMethodGet;
+
+  function _classStaticPrivateMethodSet() {
+    throw new TypeError("attempted to set read only static private field");
+  }
+
+  babelHelpers.classStaticPrivateMethodSet = _classStaticPrivateMethodSet;
+
+  function _decorate(decorators, factory, superClass, mixins) {
+    var api = _getDecoratorsApi();
+
+    if (mixins) {
+      for (var i = 0; i < mixins.length; i++) {
+        api = mixins[i](api);
+      }
+    }
+
     var r = factory(function initialize(O) {
-      _initializeInstanceElements(O, decorated.elements);
+      api.initializeInstanceElements(O, decorated.elements);
     }, superClass);
+    var decorated = api.decorateClass(_coalesceClassElements(r.d.map(_createElementDescriptor)), decorators);
+    api.initializeClassElements(r.F, decorated.elements);
+    return api.runClassFinishers(r.F, decorated.finishers);
+  }
 
-    var decorated = _decorateClass(_coalesceClassElements(r.d.map(_createElementDescriptor)), decorators);
+  function _getDecoratorsApi() {
+    _getDecoratorsApi = function () {
+      return api;
+    };
 
-    _initializeClassElements(r.F, decorated.elements);
+    var api = {
+      elementsDefinitionOrder: [["method"], ["field"]],
+      initializeInstanceElements: function (O, elements) {
+        ["method", "field"].forEach(function (kind) {
+          elements.forEach(function (element) {
+            if (element.kind === kind && element.placement === "own") {
+              this.defineClassElement(O, element);
+            }
+          }, this);
+        }, this);
+      },
+      initializeClassElements: function (F, elements) {
+        var proto = F.prototype;
+        ["method", "field"].forEach(function (kind) {
+          elements.forEach(function (element) {
+            var placement = element.placement;
 
-    return _runClassFinishers(r.F, decorated.finishers);
+            if (element.kind === kind && (placement === "static" || placement === "prototype")) {
+              var receiver = placement === "static" ? F : proto;
+              this.defineClassElement(receiver, element);
+            }
+          }, this);
+        }, this);
+      },
+      defineClassElement: function (receiver, element) {
+        var descriptor = element.descriptor;
+
+        if (element.kind === "field") {
+          var initializer = element.initializer;
+          descriptor = {
+            enumerable: descriptor.enumerable,
+            writable: descriptor.writable,
+            configurable: descriptor.configurable,
+            value: initializer === void 0 ? void 0 : initializer.call(receiver)
+          };
+        }
+
+        Object.defineProperty(receiver, element.key, descriptor);
+      },
+      decorateClass: function (elements, decorators) {
+        var newElements = [];
+        var finishers = [];
+        var placements = {
+          static: [],
+          prototype: [],
+          own: []
+        };
+        elements.forEach(function (element) {
+          this.addElementPlacement(element, placements);
+        }, this);
+        elements.forEach(function (element) {
+          if (!_hasDecorators(element)) return newElements.push(element);
+          var elementFinishersExtras = this.decorateElement(element, placements);
+          newElements.push(elementFinishersExtras.element);
+          newElements.push.apply(newElements, elementFinishersExtras.extras);
+          finishers.push.apply(finishers, elementFinishersExtras.finishers);
+        }, this);
+
+        if (!decorators) {
+          return {
+            elements: newElements,
+            finishers: finishers
+          };
+        }
+
+        var result = this.decorateConstructor(newElements, decorators);
+        finishers.push.apply(finishers, result.finishers);
+        result.finishers = finishers;
+        return result;
+      },
+      addElementPlacement: function (element, placements, silent) {
+        var keys = placements[element.placement];
+
+        if (!silent && keys.indexOf(element.key) !== -1) {
+          throw new TypeError("Duplicated element (" + element.key + ")");
+        }
+
+        keys.push(element.key);
+      },
+      decorateElement: function (element, placements) {
+        var extras = [];
+        var finishers = [];
+
+        for (var decorators = element.decorators, i = decorators.length - 1; i >= 0; i--) {
+          var keys = placements[element.placement];
+          keys.splice(keys.indexOf(element.key), 1);
+          var elementObject = this.fromElementDescriptor(element);
+          var elementFinisherExtras = this.toElementFinisherExtras((0, decorators[i])(elementObject) || elementObject);
+          element = elementFinisherExtras.element;
+          this.addElementPlacement(element, placements);
+
+          if (elementFinisherExtras.finisher) {
+            finishers.push(elementFinisherExtras.finisher);
+          }
+
+          var newExtras = elementFinisherExtras.extras;
+
+          if (newExtras) {
+            for (var j = 0; j < newExtras.length; j++) {
+              this.addElementPlacement(newExtras[j], placements);
+            }
+
+            extras.push.apply(extras, newExtras);
+          }
+        }
+
+        return {
+          element: element,
+          finishers: finishers,
+          extras: extras
+        };
+      },
+      decorateConstructor: function (elements, decorators) {
+        var finishers = [];
+
+        for (var i = decorators.length - 1; i >= 0; i--) {
+          var obj = this.fromClassDescriptor(elements);
+          var elementsAndFinisher = this.toClassDescriptor((0, decorators[i])(obj) || obj);
+
+          if (elementsAndFinisher.finisher !== undefined) {
+            finishers.push(elementsAndFinisher.finisher);
+          }
+
+          if (elementsAndFinisher.elements !== undefined) {
+            elements = elementsAndFinisher.elements;
+
+            for (var j = 0; j < elements.length - 1; j++) {
+              for (var k = j + 1; k < elements.length; k++) {
+                if (elements[j].key === elements[k].key && elements[j].placement === elements[k].placement) {
+                  throw new TypeError("Duplicated element (" + elements[j].key + ")");
+                }
+              }
+            }
+          }
+        }
+
+        return {
+          elements: elements,
+          finishers: finishers
+        };
+      },
+      fromElementDescriptor: function (element) {
+        var obj = {
+          kind: element.kind,
+          key: element.key,
+          placement: element.placement,
+          descriptor: element.descriptor
+        };
+        var desc = {
+          value: "Descriptor",
+          configurable: true
+        };
+        Object.defineProperty(obj, Symbol.toStringTag, desc);
+        if (element.kind === "field") obj.initializer = element.initializer;
+        return obj;
+      },
+      toElementDescriptors: function (elementObjects) {
+        if (elementObjects === undefined) return;
+        return babelHelpers.toArray(elementObjects).map(function (elementObject) {
+          var element = this.toElementDescriptor(elementObject);
+          this.disallowProperty(elementObject, "finisher", "An element descriptor");
+          this.disallowProperty(elementObject, "extras", "An element descriptor");
+          return element;
+        }, this);
+      },
+      toElementDescriptor: function (elementObject) {
+        var kind = String(elementObject.kind);
+
+        if (kind !== "method" && kind !== "field") {
+          throw new TypeError('An element descriptor\'s .kind property must be either "method" or' + ' "field", but a decorator created an element descriptor with' + ' .kind "' + kind + '"');
+        }
+
+        var key = babelHelpers.toPropertyKey(elementObject.key);
+        var placement = String(elementObject.placement);
+
+        if (placement !== "static" && placement !== "prototype" && placement !== "own") {
+          throw new TypeError('An element descriptor\'s .placement property must be one of "static",' + ' "prototype" or "own", but a decorator created an element descriptor' + ' with .placement "' + placement + '"');
+        }
+
+        var descriptor = elementObject.descriptor;
+        this.disallowProperty(elementObject, "elements", "An element descriptor");
+        var element = {
+          kind: kind,
+          key: key,
+          placement: placement,
+          descriptor: Object.assign({}, descriptor)
+        };
+
+        if (kind !== "field") {
+          this.disallowProperty(elementObject, "initializer", "A method descriptor");
+        } else {
+          this.disallowProperty(descriptor, "get", "The property descriptor of a field descriptor");
+          this.disallowProperty(descriptor, "set", "The property descriptor of a field descriptor");
+          this.disallowProperty(descriptor, "value", "The property descriptor of a field descriptor");
+          element.initializer = elementObject.initializer;
+        }
+
+        return element;
+      },
+      toElementFinisherExtras: function (elementObject) {
+        var element = this.toElementDescriptor(elementObject);
+
+        var finisher = _optionalCallableProperty(elementObject, "finisher");
+
+        var extras = this.toElementDescriptors(elementObject.extras);
+        return {
+          element: element,
+          finisher: finisher,
+          extras: extras
+        };
+      },
+      fromClassDescriptor: function (elements) {
+        var obj = {
+          kind: "class",
+          elements: elements.map(this.fromElementDescriptor, this)
+        };
+        var desc = {
+          value: "Descriptor",
+          configurable: true
+        };
+        Object.defineProperty(obj, Symbol.toStringTag, desc);
+        return obj;
+      },
+      toClassDescriptor: function (obj) {
+        var kind = String(obj.kind);
+
+        if (kind !== "class") {
+          throw new TypeError('A class descriptor\'s .kind property must be "class", but a decorator' + ' created a class descriptor with .kind "' + kind + '"');
+        }
+
+        this.disallowProperty(obj, "key", "A class descriptor");
+        this.disallowProperty(obj, "placement", "A class descriptor");
+        this.disallowProperty(obj, "descriptor", "A class descriptor");
+        this.disallowProperty(obj, "initializer", "A class descriptor");
+        this.disallowProperty(obj, "extras", "A class descriptor");
+
+        var finisher = _optionalCallableProperty(obj, "finisher");
+
+        var elements = this.toElementDescriptors(obj.elements);
+        return {
+          elements: elements,
+          finisher: finisher
+        };
+      },
+      runClassFinishers: function (constructor, finishers) {
+        for (var i = 0; i < finishers.length; i++) {
+          var newConstructor = (0, finishers[i])(constructor);
+
+          if (newConstructor !== undefined) {
+            if (typeof newConstructor !== "function") {
+              throw new TypeError("Finishers must return a constructor.");
+            }
+
+            constructor = newConstructor;
+          }
+        }
+
+        return constructor;
+      },
+      disallowProperty: function (obj, name, objectType) {
+        if (obj[name] !== undefined) {
+          throw new TypeError(objectType + " can't have a ." + name + " property.");
+        }
+      }
+    };
+    return api;
   }
 
   function _createElementDescriptor(def) {
+    var key = babelHelpers.toPropertyKey(def.key);
     var descriptor;
 
     if (def.kind === "method") {
@@ -1816,7 +2255,7 @@
 
     var element = {
       kind: def.kind === "field" ? "field" : "method",
-      key: def.key,
+      key: key,
       placement: def.static ? "static" : def.kind === "field" ? "own" : "prototype",
       descriptor: descriptor
     };
@@ -1878,291 +2317,6 @@
     return desc !== undefined && !(desc.value === undefined && desc.writable === undefined);
   }
 
-  function _initializeClassElements(F, elements) {
-    var proto = F.prototype;
-    ["method", "field"].forEach(function (kind) {
-      elements.forEach(function (element) {
-        var placement = element.placement;
-
-        if (element.kind === kind && (placement === "static" || placement === "prototype")) {
-          var receiver = placement === "static" ? F : proto;
-
-          _defineClassElement(receiver, element);
-        }
-      });
-    });
-  }
-
-  function _initializeInstanceElements(O, elements) {
-    ["method", "field"].forEach(function (kind) {
-      elements.forEach(function (element) {
-        if (element.kind === kind && element.placement === "own") {
-          _defineClassElement(O, element);
-        }
-      });
-    });
-  }
-
-  function _defineClassElement(receiver, element) {
-    var descriptor = element.descriptor;
-
-    if (element.kind === "field") {
-      var initializer = element.initializer;
-      descriptor = {
-        enumerable: descriptor.enumerable,
-        writable: descriptor.writable,
-        configurable: descriptor.configurable,
-        value: initializer === void 0 ? void 0 : initializer.call(receiver)
-      };
-    }
-
-    Object.defineProperty(receiver, element.key, descriptor);
-  }
-
-  function _decorateClass(elements, decorators) {
-    var newElements = [];
-    var finishers = [];
-    var placements = {
-      static: [],
-      prototype: [],
-      own: []
-    };
-    elements.forEach(function (element) {
-      _addElementPlacement(element, placements);
-    });
-    elements.forEach(function (element) {
-      if (!_hasDecorators(element)) return newElements.push(element);
-
-      var elementFinishersExtras = _decorateElement(element, placements);
-
-      newElements.push(elementFinishersExtras.element);
-      newElements.push.apply(newElements, elementFinishersExtras.extras);
-      finishers.push.apply(finishers, elementFinishersExtras.finishers);
-    });
-
-    if (!decorators) {
-      return {
-        elements: newElements,
-        finishers: finishers
-      };
-    }
-
-    var result = _decorateConstructor(newElements, decorators);
-
-    finishers.push.apply(finishers, result.finishers);
-    result.finishers = finishers;
-    return result;
-  }
-
-  function _addElementPlacement(element, placements, silent) {
-    var keys = placements[element.placement];
-
-    if (!silent && keys.indexOf(element.key) !== -1) {
-      throw new TypeError("Duplicated element (" + element.key + ")");
-    }
-
-    keys.push(element.key);
-  }
-
-  function _decorateElement(element, placements) {
-    var extras = [];
-    var finishers = [];
-
-    for (var decorators = element.decorators, i = decorators.length - 1; i >= 0; i--) {
-      var keys = placements[element.placement];
-      keys.splice(keys.indexOf(element.key), 1);
-
-      var elementObject = _fromElementDescriptor(element);
-
-      var elementFinisherExtras = _toElementFinisherExtras((0, decorators[i])(elementObject) || elementObject);
-
-      element = elementFinisherExtras.element;
-
-      _addElementPlacement(element, placements);
-
-      if (elementFinisherExtras.finisher) {
-        finishers.push(elementFinisherExtras.finisher);
-      }
-
-      var newExtras = elementFinisherExtras.extras;
-
-      if (newExtras) {
-        for (var j = 0; j < newExtras.length; j++) {
-          _addElementPlacement(newExtras[j], placements);
-        }
-
-        extras.push.apply(extras, newExtras);
-      }
-    }
-
-    return {
-      element: element,
-      finishers: finishers,
-      extras: extras
-    };
-  }
-
-  function _decorateConstructor(elements, decorators) {
-    var finishers = [];
-
-    for (var i = decorators.length - 1; i >= 0; i--) {
-      var obj = _fromClassDescriptor(elements);
-
-      var elementsAndFinisher = _toClassDescriptor((0, decorators[i])(obj) || obj);
-
-      if (elementsAndFinisher.finisher !== undefined) {
-        finishers.push(elementsAndFinisher.finisher);
-      }
-
-      if (elementsAndFinisher.elements !== undefined) {
-        elements = elementsAndFinisher.elements;
-
-        for (var j = 0; j < elements.length - 1; j++) {
-          for (var k = j + 1; k < elements.length; k++) {
-            if (elements[j].key === elements[k].key && elements[j].placement === elements[k].placement) {
-              throw new TypeError("Duplicated element (" + elements[j].key + ")");
-            }
-          }
-        }
-      }
-    }
-
-    return {
-      elements: elements,
-      finishers: finishers
-    };
-  }
-
-  function _fromElementDescriptor(element) {
-    var obj = {
-      kind: element.kind,
-      key: element.key,
-      placement: element.placement,
-      descriptor: element.descriptor
-    };
-    var desc = {
-      value: "Descriptor",
-      configurable: true
-    };
-    Object.defineProperty(obj, Symbol.toStringTag, desc);
-    if (element.kind === "field") obj.initializer = element.initializer;
-    return obj;
-  }
-
-  function _toElementDescriptors(elementObjects) {
-    if (elementObjects === undefined) return;
-    return babelHelpers.toArray(elementObjects).map(function (elementObject) {
-      var element = _toElementDescriptor(elementObject);
-
-      _disallowProperty(elementObject, "finisher", "An element descriptor");
-
-      _disallowProperty(elementObject, "extras", "An element descriptor");
-
-      return element;
-    });
-  }
-
-  function _toElementDescriptor(elementObject) {
-    var kind = String(elementObject.kind);
-
-    if (kind !== "method" && kind !== "field") {
-      throw new TypeError('An element descriptor\'s .kind property must be either "method" or' + ' "field", but a decorator created an element descriptor with' + ' .kind "' + kind + '"');
-    }
-
-    var key = elementObject.key;
-    if (typeof key !== "string" && typeof key !== "symbol") key = String(key);
-    var placement = String(elementObject.placement);
-
-    if (placement !== "static" && placement !== "prototype" && placement !== "own") {
-      throw new TypeError('An element descriptor\'s .placement property must be one of "static",' + ' "prototype" or "own", but a decorator created an element descriptor' + ' with .placement "' + placement + '"');
-    }
-
-    var descriptor = elementObject.descriptor;
-
-    _disallowProperty(elementObject, "elements", "An element descriptor");
-
-    var element = {
-      kind: kind,
-      key: key,
-      placement: placement,
-      descriptor: Object.assign({}, descriptor)
-    };
-
-    if (kind !== "field") {
-      _disallowProperty(elementObject, "initializer", "A method descriptor");
-    } else {
-      _disallowProperty(descriptor, "get", "The property descriptor of a field descriptor");
-
-      _disallowProperty(descriptor, "set", "The property descriptor of a field descriptor");
-
-      _disallowProperty(descriptor, "value", "The property descriptor of a field descriptor");
-
-      element.initializer = elementObject.initializer;
-    }
-
-    return element;
-  }
-
-  function _toElementFinisherExtras(elementObject) {
-    var element = _toElementDescriptor(elementObject);
-
-    var finisher = _optionalCallableProperty(elementObject, "finisher");
-
-    var extras = _toElementDescriptors(elementObject.extras);
-
-    return {
-      element: element,
-      finisher: finisher,
-      extras: extras
-    };
-  }
-
-  function _fromClassDescriptor(elements) {
-    var obj = {
-      kind: "class",
-      elements: elements.map(_fromElementDescriptor)
-    };
-    var desc = {
-      value: "Descriptor",
-      configurable: true
-    };
-    Object.defineProperty(obj, Symbol.toStringTag, desc);
-    return obj;
-  }
-
-  function _toClassDescriptor(obj) {
-    var kind = String(obj.kind);
-
-    if (kind !== "class") {
-      throw new TypeError('A class descriptor\'s .kind property must be "class", but a decorator' + ' created a class descriptor with .kind "' + kind + '"');
-    }
-
-    _disallowProperty(obj, "key", "A class descriptor");
-
-    _disallowProperty(obj, "placement", "A class descriptor");
-
-    _disallowProperty(obj, "descriptor", "A class descriptor");
-
-    _disallowProperty(obj, "initializer", "A class descriptor");
-
-    _disallowProperty(obj, "extras", "A class descriptor");
-
-    var finisher = _optionalCallableProperty(obj, "finisher");
-
-    var elements = _toElementDescriptors(obj.elements);
-
-    return {
-      elements: elements,
-      finisher: finisher
-    };
-  }
-
-  function _disallowProperty(obj, name, objectType) {
-    if (obj[name] !== undefined) {
-      throw new TypeError(objectType + " can't have a ." + name + " property.");
-    }
-  }
-
   function _optionalCallableProperty(obj, name) {
     var value = obj[name];
 
@@ -2173,23 +2327,90 @@
     return value;
   }
 
-  function _runClassFinishers(constructor, finishers) {
-    for (var i = 0; i < finishers.length; i++) {
-      var newConstructor = (0, finishers[i])(constructor);
+  babelHelpers.decorate = _decorate;
 
-      if (newConstructor !== undefined) {
-        if (typeof newConstructor !== "function") {
-          throw new TypeError("Finishers must return a constructor.");
-        }
-
-        constructor = newConstructor;
-      }
+  function _classPrivateMethodGet(receiver, privateSet, fn) {
+    if (!privateSet.has(receiver)) {
+      throw new TypeError("attempted to get private field on non-instance");
     }
 
-    return constructor;
+    return fn;
   }
 
-  babelHelpers.decorate = _decorate;
+  babelHelpers.classPrivateMethodGet = _classPrivateMethodGet;
+
+  function _classPrivateMethodSet() {
+    throw new TypeError("attempted to reassign private method");
+  }
+
+  babelHelpers.classPrivateMethodSet = _classPrivateMethodSet;
+
+  function _wrapRegExp(re, groups) {
+    babelHelpers.wrapRegExp = _wrapRegExp = function (re, groups) {
+      return new BabelRegExp(re, undefined, groups);
+    };
+
+    var _RegExp = babelHelpers.wrapNativeSuper(RegExp);
+
+    var _super = RegExp.prototype;
+
+    var _groups = new WeakMap();
+
+    function BabelRegExp(re, flags, groups) {
+      var _this = _RegExp.call(this, re, flags);
+
+      _groups.set(_this, groups || _groups.get(re));
+
+      return _this;
+    }
+
+    babelHelpers.inherits(BabelRegExp, _RegExp);
+
+    BabelRegExp.prototype.exec = function (str) {
+      var result = _super.exec.call(this, str);
+
+      if (result) result.groups = buildGroups(result, this);
+      return result;
+    };
+
+    BabelRegExp.prototype[Symbol.replace] = function (str, substitution) {
+      if (typeof substitution === "string") {
+        var groups = _groups.get(this);
+
+        return _super[Symbol.replace].call(this, str, substitution.replace(/\$<([^>]+)>/g, function (_, name) {
+          return "$" + groups[name];
+        }));
+      } else if (typeof substitution === "function") {
+        var _this = this;
+
+        return _super[Symbol.replace].call(this, str, function () {
+          var args = [];
+          args.push.apply(args, arguments);
+
+          if (typeof args[args.length - 1] !== "object") {
+            args.push(buildGroups(args, _this));
+          }
+
+          return substitution.apply(this, args);
+        });
+      } else {
+        return _super[Symbol.replace].call(this, str, substitution);
+      }
+    };
+
+    function buildGroups(result, re) {
+      var g = _groups.get(re);
+
+      return Object.keys(g).reduce(function (groups, name) {
+        groups[name] = result[g[name]];
+        return groups;
+      }, Object.create(null));
+    }
+
+    return _wrapRegExp.apply(this, arguments);
+  }
+
+  babelHelpers.wrapRegExp = _wrapRegExp;
 })(typeof global === "undefined" ? self : global);
 
 /* axios v0.17.1 | (c) 2017 by Matt Zabriskie */
