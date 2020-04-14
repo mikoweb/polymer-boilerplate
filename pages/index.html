@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Index page</title>
     <link href="../bundle/style.css" rel="stylesheet">
-    <script src="../bundle/core.js"></script>
-    <script src="../bundle/polyfills/webcomponents-loader.js"></script>
-    <script type="module" src="../fragments/components.js" crossorigin></script>
 </head>
 <body>
     <paper-progress value="0" secondary-progress="80" class="page-progress active transiting"
@@ -52,6 +49,9 @@
         </app-drawer>
     </header>
     <hello-element user-name="Guest"></hello-element>
+    <script src="../bundle/core.js"></script>
     <script src="../bundle/app.js"></script>
+    <script src="../bundle/polyfills/webcomponents-loader.js"></script>
+    <script type="module" src="../fragments/components.js" crossorigin></script>
 </body>
 </html>
