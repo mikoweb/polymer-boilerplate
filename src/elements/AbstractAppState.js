@@ -1,6 +1,6 @@
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 
-class AbstractAppState extends PolymerElement {
+export default class AbstractAppState extends PolymerElement {
     ready() {
         super.ready();
         this.style.display = 'none';
