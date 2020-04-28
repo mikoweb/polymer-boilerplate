@@ -30,11 +30,15 @@ export default class FormBehavior extends ElementView {
      * @private
      */
     _onButtonSubmit(event) {
-        const hidden = document.createElement('input');
-        hidden.hidden = true;
-        hidden.name = event.target.getAttribute('name');
-        hidden.value = '1';
-        event.target.parentElement.appendChild(hidden);
+        const name = event.target.getAttribute('name');
+
+        if (name && !event.target.parentElement.querySelector(`input[name="${name}"]`)) {
+            const hidden = document.createElement('input');
+            hidden.hidden = true;
+            hidden.name = event.target.getAttribute('name');
+            hidden.value = '1';
+            event.target.parentElement.appendChild(hidden);
+        }
 
         this._root.submit();
     }
