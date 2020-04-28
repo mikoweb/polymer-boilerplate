@@ -233,11 +233,15 @@
       }, {
         key: "_onButtonSubmit",
         value: function _onButtonSubmit(event) {
-          var hidden = document.createElement('input');
-          hidden.hidden = true;
-          hidden.name = event.target.getAttribute('name');
-          hidden.value = '1';
-          event.target.parentElement.appendChild(hidden);
+          var name = event.target.getAttribute('name');
+
+          if (name && !event.target.parentElement.querySelector("input[name=\"".concat(name, "\"]"))) {
+            var hidden = document.createElement('input');
+            hidden.hidden = true;
+            hidden.name = event.target.getAttribute('name');
+            hidden.value = '1';
+            event.target.parentElement.appendChild(hidden);
+          }
 
           this._root.submit();
         }
