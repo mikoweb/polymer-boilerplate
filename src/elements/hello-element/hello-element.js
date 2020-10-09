@@ -1,7 +1,7 @@
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import AbstractElement from "../AbstractElement";
 import template from './template.js';
 
-class HelloElement extends PolymerElement {
+class HelloElement extends AbstractElement {
     static get properties() {
         return {
             userName: {
